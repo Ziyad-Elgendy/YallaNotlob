@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 1
+  user_id: 1
+  restaurant: MyText
+  type: MyText
+  status: MyText
+  menu_img: 
+  user: one
+  order_items: one
+
+two:
+  id: 1
+  user_id: 1
+  restaurant: MyText
+  type: MyText
+  status: MyText
+  menu_img: 
+  user: two
+  order_items: two
