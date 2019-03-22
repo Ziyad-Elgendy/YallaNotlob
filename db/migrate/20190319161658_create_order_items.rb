@@ -5,7 +5,7 @@ class CreateOrderItems < ActiveRecord::Migration[5.2]
       t.string :amount
       t.float :price
       t.text :comment
-      t.references :user, foreign_key: true
+      t.references :user, foreign_key: false
       t.references :order, foreign_key: true
 
       t.timestamps
