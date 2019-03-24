@@ -1,0 +1,130 @@
+<h1>Add Order</h1>
+<div class="row">
+    <form class="col-md-6">
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Order For:</label>
+            <div class="col-md-8">
+                <select class="form-control">
+                    <option>Launch</option>
+                    <option>BreakFast</option>
+                    <option>Dinner</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Restaurant Name:</label>
+            <div class="col-md-8">
+                 <input type="text" class="form-control" >
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">You Can Write Friend Name Or Group </label>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Friends :</label>
+            <div class="col-md-8">
+                <input type="text" autocomplete="off" id="friends" class="form-control" >
+            </div>
+        </div>  
+        <div class="row">
+            <label class="col-md-12 text-right col-form-label text-muted">please start any tag with @</label>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Menu Image :</label>
+            <div class="col-md-8">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" >
+                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                </div>
+            </div>
+        </div>  
+        <button class="btn btn-primary" type="submit">Publish</button>
+    </form>
+    <div class="col-md-6">
+        <fieldset class="border p-2">
+            <legend class="w-auto">Friends Invited</legend>
+            <div class="row" id="invitedContainer">
+          
+            </div>
+        </fieldset>
+    </div>
+</div>  
+
+<%= javascript_include_tag "bootstrap-suggest.min.js" %>
+<script>
+$( document ).ready(function() {
+    const container = document.getElementById("invitedContainer");
+    let newElement = document.createElement('div');
+    //container.innerHTML = '<%= image_tag 'a.png' %>';
+    // console.log(newElement);
+    // console.log( container.children );
+});
+
+    let users = [
+        {username: 'lodev09', type: 'friend',id:1},
+        {username: 'foo', type: 'group'},
+        {username: 'bar', type: 'friend',id:2},
+        {username: 'twbs', type: 'group'},
+        {username: 'john', type: 'friend',id:3},
+        {username: 'jane', type: 'group'},
+        ];
+    let selectedUsers = [];
+    $('#friends').suggest({'@' : {
+    data: users.filter(user=>selectedUsers.username==users.username),
+    map: function(user) {
+        return {
+        value: user.username,
+        text: '<strong>'+user.username+'</strong> <small>'+user.type+'</small>'
+        }
+    },
+    onselect: function name(e, item) {
+        let exists = selectedUsers.filter(i=>i.index == item.index)
+        if(exists.length==0){
+            selectedUsers = [...selectedUsers,item]
+            users = users.filter(user=>user.username!=item.value)
+        }
+        insertInvited();
+        }
+    }})
+    /* let newElem = '<div class="col-md-4"> <%= image_tag "a.png" %>'+
+    # '<a href="" class="col-md-12"> '+item.value+'</a>'+
+    # '<button class="col-md-12"> remove </button></div>';
+    # let container = document.getElementById("invitedContainer");
+    # container.innerHTML +=newElem;
+    # console.log(item)
+    # console.log(item.value)
+    */
+    // insert all selected users to the div invited container
+    function insertInvited(){
+        let container = document.getElementById("invitedContainer");
+        container.innerHTML="";
+        selectedUsers.map(item=>{
+            let newElem = '<div class="col-md-4"> <%= image_tag "a.png" %>'+
+            '<p class="text-center col-md-12"> '+item.value+'</p>'+
+            '<button id='+item.value+' item.value" onclick="removeInviation(event)" class="btn btn-danger col-md-12"> remove </button></div>';
+            container.innerHTML+=newElem;
+        });
+    }
+    // remove inviation from array and div
+    function removeInviation(e){
+        console.log(e.target)
+        e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+        selectedUsers=selectedUsers.filter(user=>{console.log("hello",user.value,e.target.id,user.value!=e.target.id ); return user.value!=e.target.id ; });
+        const friends = document.getElementById("friends");
+        let reg = new RegExp('@'+e.target.id, "g");
+        console.log(friends.value.replace('@'+e.target.id, ""))
+        friends.value = friends.value.replace(reg, "");
+        console.log(selectedUsers)
+    }
+    /* <div class="col-md-4">
+    #     <%= image_tag "a.png" %>
+    #         <a href="" class="col-md-12"> Friend Name </a>
+    #         <a href="" class="col-md-12"> remove </a>
+    # </div>
+    # <div class="col-md-4">
+    #     <%= image_tag "a.png" %>
+    #         <a href="" class="col-md-12"> Friend Name </a>
+    #         <a href="" class="col-md-12"> remove </a>
+    # </div>
+    */
+</script>
