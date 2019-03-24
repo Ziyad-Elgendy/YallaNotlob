@@ -22,7 +22,9 @@
         <li class="nav-item dropdown">
         
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <%= image_tag "notif.png" , {width: 30, height: 30} %>
+        
+          <%= image_tag "notif.png" , {width: 30, height: 30} %>
+       
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="#">Action</a>
@@ -32,8 +34,11 @@
   </li>
       <li class="nav-item ">
       <div class="row">
-      <%= image_tag "a.png" ,  {width: 50, height: 50}%>
-
+      <% if current_user.image %>
+          <img src="<%= current_user.image %>" >  
+        <% else %>
+          <%= image_tag "a.png" ,  {width: 50, height: 50}%>
+      <% end %>
         <a class="nav-link col-md-6" href="#">User name</a>
         </div>
       </li>
