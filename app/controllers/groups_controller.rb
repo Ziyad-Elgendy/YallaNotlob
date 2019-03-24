@@ -7,9 +7,11 @@ class GroupsController < ApplicationController
       end
       
       def show
-          @groups = Group.all
+        @groups = Group.all
+        @group = Group.new
+        @group = Group.find(params[:id])
       end    
-  
+
   
       # def new
       #   @group = Group.new
@@ -17,21 +19,24 @@ class GroupsController < ApplicationController
           def create
               @group = Group.new(group_params)
               if @group.save
-              redirect_to @group
+              redirect_to  groups_path 
             else
               render 'show'
             end
           end
       
-        def delete
-  
+        def destroy
+          @group = Group.find(params[:id])
+          @group.destroy	 
+          redirect_to groups_path
         end  
       
-        def destroy  
-              @group = Group.find(params[:id])
-              @group.destroy	 
-            redirect_to show_path
-        end    
+
+        # def destroy  
+        #   @group = Group.find(params[:id])
+        #   @group.destroy	 
+        #   redirect_to root_path
+        # end    
   
         private
         def group_params

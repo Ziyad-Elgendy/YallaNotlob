@@ -1,0 +1,11 @@
+<div class="row">
+
+<%= form_with model: @group , local:true do |form| %>
+   <label>Group</label>
+   <%= form.text_field :name %>
+    <%= form.submit "Add", class: "btn btn-primary" %>
+   <% end %>
+
+
+</div>
+<hr/>
