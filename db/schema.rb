@@ -10,19 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2019_03_24_085343) do
-
-  create_table "friends", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "friend_id", null: false
-    t.integer "user_id", null: false
-  end
-
-  create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.text "name", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-=======
 ActiveRecord::Schema.define(version: 2019_03_22_050536) do
 
   create_table "friends", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -32,7 +19,6 @@ ActiveRecord::Schema.define(version: 2019_03_22_050536) do
     t.text "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
->>>>>>> ad3fa25b1a73c91fcb47c7ec8db704d5810f4dd1
   end
 
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
