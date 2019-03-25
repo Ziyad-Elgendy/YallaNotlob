@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2019_03_24_085343) do
+ActiveRecord::Schema.define(version: 2019_03_24_115130) do
 
   create_table "friends", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "friend_id", null: false
@@ -22,6 +21,8 @@ ActiveRecord::Schema.define(version: 2019_03_24_085343) do
     t.text "name", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_groups_on_user_id"
   end
 
   create_table "members", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT", force: :cascade do |t|
@@ -31,19 +32,6 @@ ActiveRecord::Schema.define(version: 2019_03_24_085343) do
     t.index ["user_id"], name: "index_users_groups_on_user_id"
   end
 
-=======
-ActiveRecord::Schema.define(version: 2019_03_22_050536) do
-
-  create_table "friends", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-  end
-
-  create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.text "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
->>>>>>> ad3fa25b1a73c91fcb47c7ec8db704d5810f4dd1
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "status"
     t.bigint "order_id"
@@ -98,23 +86,12 @@ ActiveRecord::Schema.define(version: 2019_03_22_050536) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-<<<<<<< HEAD
+  add_foreign_key "groups", "users"
   add_foreign_key "members", "groups"
   add_foreign_key "members", "users"
-=======
-  create_table "users_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.bigint "group_id"
-    t.bigint "user_id"
-    t.index ["group_id"], name: "index_users_groups_on_group_id"
-    t.index ["user_id"], name: "index_users_groups_on_user_id"
-  end
-
->>>>>>> ad3fa25b1a73c91fcb47c7ec8db704d5810f4dd1
   add_foreign_key "notifications", "orders"
   add_foreign_key "notifications", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "user_orders", "orders"
   add_foreign_key "user_orders", "users"
-  add_foreign_key "users_groups", "groups"
-  add_foreign_key "users_groups", "users"
 end

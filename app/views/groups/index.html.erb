@@ -1,39 +1,99 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-  <head>
+<head>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<script src="function.js"></script> 
-  </head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
-  <body>
+</head>
+<body>
+
+  <h1 class="title text-center" style='font_color=blue'>Groups</h1>
+
+  <!--Add new group-->
+  <div class="container">
+      
+    <div class="row">
+      <%= form_with model: @group , local:true do |form| %>
+      <label>Group</label>
+      <%= form.text_field :name %>
+      <%= form.submit "Add", class: "btn btn-primary" %>
+      <% end %>
+    </div>
 
 
-<div class="container">
-    <h1 class="title text-center">Groups</h1>
-  
+    <hr  style='color:blue;height:5px;background:blue' >
 
     
-    <%= render 'new' %>
-
-    
 
 
-    <!-- The div for groups -->
+    <!-- The div for lsgroups -->
     <!-- The container of listgroups & manage group -->
     <div class="row">
 
-        <%= render 'listgroups' %>
-<br>
-        <%= render 'managegroup' %>
+      <div class="col-md-4 ">
+        <div class="panel panel-default">
+          <div class="panel-heading"><p>My Groups</p></div>
 
-       
-       
+          <div class="panel-body">
+            <div class="row">
+            <% @groups.each do |group| %>
+            <div class="col-md-6">
+              <p style="font-size:20px" ><%= group.name %>'  '<%= group.id %></p>         
+            </div>
+
+            <div class="col-md-3">
+              <%= link_to 'Select',  group_path(group), class:"btn btn-primary" %>
+            </div>
+
+            <div class="col-md-3">
+                <%= link_to 'Destroy', group_path(group),
+                method: :delete,
+                data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+            </div>
+            <% end %>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- The group managing div -->
+      <div class="col-md-6 ">
+      <div class="panel-body " >
+      <h1>Hello</h1>
+        <div>
+        <legend class="the-legend text-center" id="groupName"><%= @group.name %><span>  Group</span></legend>
+
+
+         <% if @group_s %>
+           <%= form_tag("/groups/#{ @group_s.id}/addFriend", method: "post", class: "nifty_form") do %>
+               <%= label_tag(:name, "Your Friend Name :") %>
+               <%= text_field_tag(:name) %>
+               <%= hidden_field_tag(:groupId, @group_s.id) %>
+               <%= submit_tag("Add") %>
+
+             <% end %>
+         
+        </div>
+        <p>two</p>
+        <div>
+        <% if !@friends.empty? %>
+         <div class="row" style='margin-top:40px;'>
+             <%= render :file => 'groups/show' %>
+         </div>	
+         <% else %>
+        <div class="alert alert-info" role="alert" style='margin-top:40px;'> Empty ... Not Have Any Friend In .</div>
+        <%end%>
+
+        <%end%>
+        </div>
+      </div>
+      </div>
+
+
+
+
     </div>
-
-</div>
-
-
+  </div>
 </body>
 </html>
