@@ -6,8 +6,8 @@ class User < ApplicationRecord
          :omniauthable, :omniauth_providers => [:facebook , :google_oauth2]
 
 
-# has_many :friends
-# belongs_to :friend
+has_many :friends
+belongs_to :friend
 has_many :inverse_friends, :class_name => "Friend", :foreign_key => "friend_id"
 has_many :notifications
 has_many :members
