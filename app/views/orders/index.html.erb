@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-md-10">
+        <h1> Order</h1>
+    </div>
+    <div class="col-md-2">
+        <a href=" <%= new_order_path %>" class="btn btn-info"> Start new Order </a>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+    <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Order</th>
+        <th scope="col">Restaurant</th>
+        <th scope="col">Invited</th>
+        <th scope="col">Joined</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    <% for order in @orders %>
+      <tr>
+        <th scope="row"><%= order.order.id %></th>
+        <td><%= order.order.name %></td>
+        <td><%= order.order.restaurant %></td>
+        <td><%= order.count_invited_users(order.order.id) %></td>
+        <td><%= order.count_joined_users(order.order.id) %></td>
+        <td><%= order.order.status %></td>
+        <td><% if (order.order.status == 'waiting')%>
+        <%= link_to 'finish', order_path(order.order),
+        method: :put,
+        data: { confirm: 'Are you sure?' } %>
+        <%= link_to 'cancel', order_path(order.order),
+        method: :delete,
+        data: { confirm: 'Are you sure?' } %>
+
+        
+        <% else %>
+        <a href=" <%= order_path(order.order) %>" > view </a>
+
+
+        <% end %>
+        
+        </td>
+      </tr>
+      <% end %>
+  
+    </tbody>
+  </table>
+  
+    </div>
+</div>

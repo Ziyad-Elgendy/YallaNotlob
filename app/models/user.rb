@@ -9,8 +9,8 @@ class User < ApplicationRecord
 has_many :friends
 has_many :inverse_friends, :class_name => "Friend", :foreign_key => "friend_id"
 has_many :notifications
-has_and_belongs_to_many :orders
 has_many :members
+has_many :user_orders
 
 def self.new_with_session(params, session)
   super.tap do |user|
