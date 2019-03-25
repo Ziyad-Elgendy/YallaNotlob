@@ -3,16 +3,21 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, :omniauth_providers => [:facebook]
+         :omniauthable, :omniauth_providers => [:facebook , :google_oauth2]
 
 
 has_many :friends
-belongs_to :friend
 has_many :inverse_friends, :class_name => "Friend", :foreign_key => "friend_id"
 has_many :notifications
+<<<<<<< HEAD
 has_and_belongs_to_many :orders
 # has_many :members
 has_many :groups
+=======
+has_many :members
+has_many :user_orders
+
+>>>>>>> 581e5258f718e4d73b35f5539d3d66264e904a17
 def self.new_with_session(params, session)
   super.tap do |user|
     if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
