@@ -24,7 +24,7 @@ class OrdersController < ApplicationController
       if @order.update(:status => 'finished')
         redirect_to orders_path
       else
-        render 'please try again'
+        render "index"
       end
     end
     
