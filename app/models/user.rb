@@ -9,15 +9,10 @@ class User < ApplicationRecord
 has_many :friends
 has_many :inverse_friends, :class_name => "Friend", :foreign_key => "friend_id"
 has_many :notifications
-<<<<<<< HEAD
-has_and_belongs_to_many :orders
-# has_many :members
-has_many :groups
-=======
 has_many :members
 has_many :user_orders
+has_many :groups
 
->>>>>>> 581e5258f718e4d73b35f5539d3d66264e904a17
 def self.new_with_session(params, session)
   super.tap do |user|
     if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]

@@ -57,38 +57,42 @@
         </div>
       </div>
 
+      
       <!-- The group managing div -->
-      <div class="col-md-6 ">
-      <div class="panel-body " >
-      <h1>Hello</h1>
-        <div>
-        <legend class="the-legend text-center" id="groupName"><%= @group.name %><span>  Group</span></legend>
-
-
-         <% if @group_s %>
-           <%= form_tag("/groups/#{ @group_s.id}/addFriend", method: "post", class: "nifty_form") do %>
-               <%= label_tag(:name, "Your Friend Name :") %>
-               <%= text_field_tag(:name) %>
-               <%= hidden_field_tag(:groupId, @group_s.id) %>
-               <%= submit_tag("Add") %>
-
-             <% end %>
-         
-        </div>
-        <p>two</p>
-        <div>
-        <% if !@friends.empty? %>
-         <div class="row" style='margin-top:40px;'>
-             <%= render :file => 'groups/show' %>
-         </div>	
-         <% else %>
-        <div class="alert alert-info" role="alert" style='margin-top:40px;'> Empty ... Not Have Any Friend In .</div>
+      <div class='col-sm-8'>
+      <div class="panel  panel-success">
+      <div class="panel-heading">  
+        <% if @group_s %>
+          <%= @group_s.name %>
+          <%else%>
+            Select Group
         <%end%>
+      </div>
+      <div class="panel-body">
+       <div>
+          <% if @group_s %>
+            <%= form_tag("/groups/#{ @group_s.id}/addFriend", method: "post", class: "nifty_form") do %>
+                <%= label_tag(:name, "Your Friend Name :") %>
+                <%= text_field_tag(:name) %>
+                <%= hidden_field_tag(:groupId, @group_s.id) %>
+                <%= submit_tag("Add") %>
 
+              <% end %>
+          
+       </div>
+       <div>
+        <% if !@friends %>
+          <div class="row" style='margin-top:40px;'>
+              <%= render :file => 'groups/show' %>
+          </div>	
+          <% else %>
+          <div class="alert alert-info" role="alert" style='margin-top:40px;'> Empty ... Not Have Any Friend In .</div>
         <%end%>
-        </div>
+        <%end%>
+       </div>
       </div>
-      </div>
+    </div>
+    </div>
 
 
 
