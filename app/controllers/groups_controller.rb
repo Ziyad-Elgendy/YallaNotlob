@@ -3,8 +3,8 @@ class GroupsController < ApplicationController
   def index
       @groups = Group.all
       @group = Group.new
-      @group_s = Group.find(params[:id])
-      @friends = @group_s.users
+      # @group_s = Group.find(params[:id])
+      # @friends = @group_s.users
   end
       
   def listG
