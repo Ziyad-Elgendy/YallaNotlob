@@ -23,15 +23,33 @@
         <div class="col-md-12">
             <h3> Friends List </h3>
         </div>
+        <% if flash[:notice] %>
+            <div class="notice"><%= flash[:notice] %></div>
+        <% end %>
+        <% if flash[:error] %>
+            <div class="error"><%= flash[:error] %></div>
+        <% end %>
       <% for friend in @friends %>
         
       <div class="col-md-4">
       <div class="row">
           <div class="col-md-5">
-          <%= image_tag "a.png" ,class:"col-md-12" %>
+
+          <% if friend.friend.image %>
+          <img src="<%= friend.friend.image %>" class="col-md-12">  
+        <% else %>
+        <%= image_tag "a.png" ,class:"col-md-12" %>
+
+          <% end %>    
+
           </div>
           <div class="col-md-7">
+<<<<<<< HEAD
               <span class="col-md-12"> <%= friend.user.name %> </span>
+=======
+              <span class="col-md-12"> <%= friend.friend.name %> </span>
+            
+>>>>>>> ce8534110a29cdfae6f8df566f8947796c933734
               <%= link_to 'unfriend', friend_path(friend),
               method: :delete,
               data: { confirm: 'Are you sure?' } %>

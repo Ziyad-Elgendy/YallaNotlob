@@ -1,8 +1,4 @@
 class OrdersController < ApplicationController
-    def index
-    end
-    def show
-    end
     def new
         @order =Order.new
     end
@@ -34,4 +30,37 @@ class OrdersController < ApplicationController
     def order_params
         params.permit(:name,:restaurant,:img)
     end
+    before_action :authenticate_user!
+    layout 'application'
+    def index
+        @orders = current_user.user_orders.where(:status => 'owner')
+    end
+    
+    def show
+    end
+    
+    def edit
+    end
+    
+    def update
+        @order = Order.find(params[:id])
+   
+      if @order.update(:status => 'finished')
+        redirect_to orders_path
+      else
+        render "index"
+      end
+    end
+    
+    def destroy
+        UserOrder.where(:order_id => params[:id]).destroy_all
+        OrderItem.where(:order_id => params[:id]).destroy_all
+        @order = Order.find(params[:id])
+        @order.destroy
+     
+        redirect_to orders_path
+     
+    end
+    
+     
 end
