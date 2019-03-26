@@ -44,12 +44,8 @@
 
           </div>
           <div class="col-md-7">
-<<<<<<< HEAD
-              <span class="col-md-12"> <%= friend.user.name %> </span>
-=======
               <span class="col-md-12"> <%= friend.friend.name %> </span>
             
->>>>>>> ce8534110a29cdfae6f8df566f8947796c933734
               <%= link_to 'unfriend', friend_path(friend),
               method: :delete,
               data: { confirm: 'Are you sure?' } %>
