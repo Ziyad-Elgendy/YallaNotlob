@@ -12,6 +12,8 @@ has_many :notifications
 has_many :members
 has_many :user_orders
 has_many :orders
+has_many :groups
+
 def self.new_with_session(params, session)
   super.tap do |user|
     if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
