@@ -62,6 +62,15 @@ test:
 #
 production:
   <<: *default
-  database: YallaNotlob_production
-  username: YallaNotlob
-  password: <%= ENV['YALLANOTLOB_DATABASE_PASSWORD'] %>
+#  database: YallaNotlob_production
+#  username: YallaNotlob
+#  password: <%= ENV['YALLANOTLOB_DATABASE_PASSWORD'] %>
+  adapter: mysql2
+  encoding: utf8
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: remotemysql.com
+  username: p3wY8fiQRn
+  password: tgekLjbMSy
+  port: 3306
+  database: p3wY8fiQRn
+

@@ -15,19 +15,32 @@
     <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', integrity:"sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" , crossorigin:"anonymous" %>
 
     <%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', integrity:"sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" , crossorigin:"anonymous" %>
-    <%= stylesheet_link_tag??? 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' %>  
-    <%= stylesheet_link_tag??? 'https://cdn.datatables.net/s/dt/dt-1.10.10,r-2.0.0/datatables.min.css' %>  
+    <%= javascript_include_tag "application" %>
     </head>
 
   <body>
   <%= render './parts/nav' %>
-  <div class="container">  
-  <div><% if flash[:notice] %>  
-  <div><%= flash[:notice] %></div>  
-  <% end %> <%= yield %></div>  
-  </div>  
-  </div>  
-    <%= javascript_include_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js' %>  
-    <%= javascript_include_tag 'https://cdn.datatables.net/s/dt/dt-1.10.10,r-2.0.0/datatables.min.js' %>  
+  <div class="container">
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    <%= link_to "Sigh Up", new_user_registration_path %>
+    <%= link_to "Sigh In", new_user_session_path %>
+    <% if user_signed_in? %>
+      <li>
+      <%= link_to('Logout', destroy_user_session_path, method: :delete) %>        
+      </li>
+    <% else %>
+      <li>
+      <%= link_to('Login', new_user_session_path)  %>  
+      </li>
+      <li>
+      <%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path %>
+      </li>
+      <li>
+      <%= link_to "Sign in with Google", user_google_oauth2_omniauth_authorize_path %>
+      </li>
+    <% end %>
+    <%= yield %>
+    </div>
   </body>
 </html>

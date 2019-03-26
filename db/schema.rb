@@ -13,8 +13,6 @@
 ActiveRecord::Schema.define(version: 2019_03_22_050536) do
 
   create_table "friends", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -24,9 +22,9 @@ ActiveRecord::Schema.define(version: 2019_03_22_050536) do
   end
 
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "status"
     t.bigint "order_id"
+    t.bigint "user_id"
     t.index ["order_id"], name: "index_notifications_on_order_id"
   end
 
@@ -55,6 +53,7 @@ ActiveRecord::Schema.define(version: 2019_03_22_050536) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "order_id"
+    t.bigint "user_id"
     t.index ["order_id"], name: "index_user_orders_on_order_id"
   end
 
@@ -67,19 +66,24 @@ ActiveRecord::Schema.define(version: 2019_03_22_050536) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.string "provider"
+    t.string "uid"
+    t.text "image"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   create_table "users_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.bigint "group_id"
+    t.bigint "user_id"
     t.index ["group_id"], name: "index_users_groups_on_group_id"
+    t.index ["user_id"], name: "index_users_groups_on_user_id"
   end
 
   add_foreign_key "notifications", "orders"
   add_foreign_key "order_items", "orders"
   add_foreign_key "user_orders", "orders"
+  add_foreign_key "user_orders", "users"
   add_foreign_key "users_groups", "groups"
+  add_foreign_key "users_groups", "users"
 end

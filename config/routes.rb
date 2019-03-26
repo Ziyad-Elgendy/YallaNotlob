@@ -1,15 +1,24 @@
 Rails.application.routes.draw do
-  get 'order_details/index'
-  devise_for :users , controllers: { registrations: 'registrations'} 
+  # devise_for :users , controllers: { registrations: 'registrations',  :omniauth_callbacks => "users/omniauth_callbacks" } 
+  devise_for :users , controllers: { :omniauth_callbacks => "users/omniauth_callbacks" } 
   devise_scope :user do  
     get '/users/sign_out' => 'devise/sessions#destroy'     
  end
- resources :order_details
- get 'welcome/order_details'
-  # root 'welcome#order_details'
- get 'welcome/showFriends'
-  # root 'welcome#showFriends'
+ 
+ resources :orders do
+  resources :order_items
+ end
+
+#  get 'order_details' => 'order_item#index'
+
+ resources :friends
+ resources :orders
+
+
   root 'welcome#index'
+
+  resources :groups
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
 end

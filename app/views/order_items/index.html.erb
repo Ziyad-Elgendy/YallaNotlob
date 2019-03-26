@@ -13,10 +13,18 @@
         <th scope="col">Price</th>
         <th scope="col">Comment</th>
       </tr>
-    </thead
+    </thead>
     <tbody>
-    <%= render @order.items %>
-        
+    <% @order_item.each do |item|  %>
+    <tr>
+    <th scope="col"></th>
+      <th scope="col"><%= item.name %></th>
+      <th scope="col"><%= item.amount %></th>
+      <th scope="col"><%= item.amount %></th>
+      <th scope="col"><%= item.price %></th>
+      <th scope="col"><%= item.comment %></th>
+    </tr>
+    <% end %>
     </tbody>
   
   </table>
@@ -75,6 +83,7 @@
 <form>
   <div class="form-row align-items-center">
     <div class="col-auto">
+    
       <label class="sr-only" for="inlineFormInput">Item</label>
       <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Item">
     </div>

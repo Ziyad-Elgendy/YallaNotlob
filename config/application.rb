@@ -15,5 +15,15 @@ module YallaNotlob
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-  end
+
+    ActionMailer::Base.smtp_settings ={
+      :address    => 'smtp.gmail.com',
+      :domain     => 'mail.google.com',
+      :port       => 587 ,
+      :user_name  => "toutta95@gmail.com",
+      :password   => "jxdidtzgerotbajk" ,
+      :authentication   => 'login',
+      :enable_starttls_auto  => true 
+    }
+  end  
 end
