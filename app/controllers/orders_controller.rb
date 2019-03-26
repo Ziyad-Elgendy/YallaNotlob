@@ -14,18 +14,26 @@ class OrdersController < ApplicationController
         @order = Order.new
         @order.name=params[:name]
         @order.restaurant=params[:restaurant]
-        p "=============================="
-        @order.img.attach(params[:order][:img])
+        if(params[:order])
+            @order.img.attach(params[:order][:img])
+        end
         @order.status="waiting"
+        @order.user=current_user
         if @order.save
+            if(!params[:friends_invited].empty?)
+                users = JSON.parse params[:friends_invited]
+                users.each do |user|
+                    @userObj = User.find_by name: user
+                    @userOrder = UserOrder.new
+                    @userOrder.order=@order
+                    @userOrder.user=@userObj
+                    @userOrder.status="Invited"
+                    @userOrder.save
+                end
+            end
             redirect_to orders_path
         end
-        users = JSON.parse params[:friends_invited]
-        # users.each do |user|
-        #     userObj = User.find_by name: params[:name]
-        #      @order = Order.new
-        #      @order.user=userObj
-        #    end
+        
     end 
     def order_params
         params.permit(:name,:restaurant,:img)

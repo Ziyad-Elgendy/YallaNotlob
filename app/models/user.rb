@@ -11,7 +11,7 @@ has_many :inverse_friends, :class_name => "Friend", :foreign_key => "friend_id"
 has_many :notifications
 has_many :members
 has_many :user_orders
-
+has_many :orders
 def self.new_with_session(params, session)
   super.tap do |user|
     if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
