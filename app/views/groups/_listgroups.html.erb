@@ -1,25 +1,26 @@
 <div class="col-md-4 ">
-<fieldset class="the-fieldset">
-    <legend class="the-legend text-center">My Groups</legend>
-    <% @groups.each do |group| %>   
-    <div class="row">
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-5">
-            <p style="font-size:20px;">ll</p>
-        </div>
-        <div class="col-md-1">
-            <input type="image" src="plus.png" alt="Add" width="24" height="24"> 
-        </div>
-        <div class="col-md-1">
-        </div>                    
-        <div class="col-md-1">
+    <fieldset class="the-fieldset">
+        <legend class="the-legend text-center">My Groups</legend>
+        <% @groups.each do |group| %>   
+        <div class="row">
+
+            <div class="col-md-6">
+                <p style="font-size:20px" ><%= group.name %></p>
+                <p style="font-size:20px" ><%= group.id %></p>
+
+            </div>
+            <div class="col-md-3">
+                <%= link_to 'Select',  group_path(group), class:"btn btn-primary" %>
+            </div>
+
+            <div class="col-md-3">
+                <%= link_to 'Destroy', group_path(group),
+                method: :delete,
+                data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+            </div>
 
         </div>
-        <div class="col-md-2">
-        </div>
-    </div>
-    <% end %>
-</fieldset>
+        <% end %>
+    </fieldset>
 </div>
-
+    

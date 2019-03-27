@@ -10,15 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_22_050536) do
+ActiveRecord::Schema.define(version: 2019_03_26_190125) do
 
-  create_table "friends", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "friends", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.integer "friend_id", null: false
+    t.integer "user_id", null: false
   end
 
   create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.text "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text "name", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_groups_on_user_id"
+  end
+
+  create_table "members", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT", force: :cascade do |t|
+    t.bigint "group_id"
+    t.bigint "user_id"
+    t.index ["group_id"], name: "index_users_groups_on_group_id"
+    t.index ["user_id"], name: "index_users_groups_on_user_id"
   end
 
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -26,6 +58,7 @@ ActiveRecord::Schema.define(version: 2019_03_22_050536) do
     t.bigint "order_id"
     t.bigint "user_id"
     t.index ["order_id"], name: "index_notifications_on_order_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "order_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -36,25 +69,26 @@ ActiveRecord::Schema.define(version: 2019_03_22_050536) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "order_id"
+    t.bigint "user_id"
     t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["user_id"], name: "index_order_items_on_user_id"
   end
 
   create_table "orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.text "type"
-    t.text "restaurant"
-    t.binary "img"
-    t.text "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "name", limit: 20
+    t.string "restaurant", limit: 200
+    t.string "img", limit: 500
+    t.string "status", limit: 20
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "user_orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.text "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "status", limit: 20
     t.bigint "order_id"
     t.bigint "user_id"
     t.index ["order_id"], name: "index_user_orders_on_order_id"
+    t.index ["user_id"], name: "index_user_orders_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -73,17 +107,15 @@ ActiveRecord::Schema.define(version: 2019_03_22_050536) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "users_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.bigint "group_id"
-    t.bigint "user_id"
-    t.index ["group_id"], name: "index_users_groups_on_group_id"
-    t.index ["user_id"], name: "index_users_groups_on_user_id"
-  end
-
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "groups", "users"
+  add_foreign_key "members", "groups"
+  add_foreign_key "members", "users"
   add_foreign_key "notifications", "orders"
+  add_foreign_key "notifications", "users"
   add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "users"
+  add_foreign_key "orders", "users"
   add_foreign_key "user_orders", "orders"
   add_foreign_key "user_orders", "users"
-  add_foreign_key "users_groups", "groups"
-  add_foreign_key "users_groups", "users"
 end

@@ -1,0 +1,178 @@
+<h1>Add Order</h1>
+<div class="row">
+<%= form_with model: @order do |form| %>
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Order For:</label>
+            <div class="col-md-8">
+                <select name="name" class="form-control">
+                    <option>Launch</option>
+                    <option>BreakFast</option>
+                    <option>Dinner</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Restaurant Name:</label>
+            <div class="col-md-8">
+                 <input type="text" name="restaurant" class="form-control" >
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">You Can Write Friend Name Or Group </label>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Friends :</label>
+            <div class="col-md-8">
+                <input type="text" autocomplete="off" id="friends" class="form-control" >
+            </div>
+        </div>  
+        <div class="row">
+            <label class="col-md-12 text-right col-form-label text-muted">please start any tag with @</label>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Menu Image :</label>
+            <div class="col-md-8">
+            <%= form.file_field :img %>
+                <div class="custom-file">
+                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                </div>
+            </div>
+        </div>  
+        <input type="hidden" name="friends_invited" id="friends_invited">
+        <button class="btn btn-primary" type="submit">Publish</button>
+    <% end %>
+
+    <div class="col-md-6">
+        <fieldset class="border p-2">
+            <legend class="w-auto">Friends Invited</legend>
+            <div class="row" id="invitedContainer">
+          
+            </div>
+        </fieldset>
+    </div>
+</div>  
+
+<%= javascript_include_tag "bootstrap-suggest.min.js" %>
+<script>
+    $( document ).ready(function() {
+        const container = document.getElementById("invitedContainer");
+        let newElement = document.createElement('div');
+    });
+    let current_user_id = <%= current_user.id.to_json %> ;
+    let selectedUsers = [];
+    let selectedGroups = [];
+    let friendsList = [];
+    loadFriendsAndGroup();
+    async function loadFriendsAndGroup(){
+        let friends = await fetch("/friends_list/", {method: "GET"}).then(res=>res.json());
+        let groups = await fetch("/groups_list/", {method: "GET"}).then(res=>res.json());
+        console.log("friends",friends);
+        console.log("groups",groups);
+        friends.map(friend=>{
+            friendsList.push({username: friend.friend.name,type:'Friend',id: friend.friend_id })
+        })
+        groups.map(group=>{
+            friendsList.push({username: group.name,type:'Group'})
+        })
+        $('#friends').suggest({'@' : {
+            data: friendsList,
+            map: function(user) {
+                return {
+                    value: user.username,
+                    text: '<strong>'+user.username+'</strong> <small>'+user.type+'</small>'
+                }
+        },
+        onselect: async function name(e, item) {
+            console.log("item",item)
+            if(item.text.endsWith("Friend")){
+                    if(!isExist(item.value))
+                        selectedUsers = [...selectedUsers,item]
+            }
+            else {
+                // if group not exist
+                if(!selectedGroups[item.value]){
+                    let friends = await fetch("/group_friend_list/"+item.value, {method: "GET"}).then(res=>res.json());
+                    selectedGroups[item.value] = friends;
+                    console.log(selectedGroups);
+                    friends.map(friend=>{
+                        if(!isExist(friend.user.name,item.value))
+                          selectedUsers = [...selectedUsers,{value:friend.user.name,groupName:item.value}]
+                    })
+                }
+            }
+            insertInvited();
+            }
+        }})
+    }
+    
+    // check if friend is exist in selectUser or not
+    function isExist(friendName,groupName){
+        let ret=false;
+        selectedUsers.map(item=>{
+            if(item.value==friendName){
+                ret=true;
+                if(groupName)
+                    item.groupName=groupName;
+            }
+        })
+        return ret;
+    }
+    // insert all selected friendsList to the div invited container
+    function insertInvited(){
+        let container = document.getElementById("invitedContainer");
+        container.innerHTML="";
+        selectedUsers.map(item=>{
+            let newElem = '<div class="col-md-4"> <%= image_tag "a.png" %>'+
+            '<p class="text-center col-md-12"> '+item.value+'</p>'+
+            '<button id='+item.value+' item.value" onclick="removeInviation(event)" class="btn btn-danger col-md-12"> remove </button></div>';
+            container.innerHTML+=newElem;
+        });
+        insetIntoForm();
+    }
+    // insert all Invited in the hidden input fieldset
+    function insetIntoForm(){
+        const invitedUser = selectedUsers.map(item=>item.value);
+        console.log(invitedUser);
+        console.log(JSON.stringify(invitedUser));
+        let hiddenInput = document.getElementById("friends_invited");
+        hiddenInput.value=JSON.stringify(invitedUser)+"";
+    }
+    // remove inviation from array and div
+    function removeInviation(e){
+        e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+        selectedUsers=selectedUsers.filter(user=>{console.log("hello",user.value,e.target.id,user.value!=e.target.id ); return user.value!=e.target.id ; });
+        removeFromGroups(e.target.id);
+        deleteTag(e.target.id);
+    }
+
+    //remove from groups if exist
+    function removeFromGroups(userName){
+        for (group in selectedGroups) {
+            selectedGroups[group]=selectedGroups[group].filter(user=>{
+                return user.user.name!=userName;
+            })
+             if(selectedGroups[group].length==0){
+                delete selectedGroups[group];
+                deleteTag(group);
+            }
+           }
+    }
+    
+    //delete tag from input text
+    function deleteTag(tag){
+        const friends = document.getElementById("friends");
+        let reg = new RegExp('@'+tag,"g");
+        friends.value = friends.value.replace(reg, "");
+    }
+    /* <div class="col-md-4">
+    #     <%= image_tag "a.png" %>
+    #         <a href="" class="col-md-12"> Friend Name </a>
+    #         <a href="" class="col-md-12"> remove </a>
+    # </div>
+    # <div class="col-md-4">
+    #     <%= image_tag "a.png" %>
+    #         <a href="" class="col-md-12"> Friend Name </a>
+    #         <a href="" class="col-md-12"> remove </a>
+    # </div>
+    */
+</script>

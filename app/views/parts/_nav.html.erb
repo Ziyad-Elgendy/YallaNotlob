@@ -15,7 +15,7 @@
         <a class="nav-link" href="<%= orders_path %>">Orders</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Groups</a>
+        <a class="nav-link" href=<%= groups_path %> >Groups</a>
       </li>
     </ul>
     <ul class="navbar-nav " >
@@ -35,13 +35,17 @@
       <li class="nav-item ">
       <div class="row">
       <% if user_signed_in? %>
-      <% if current_user.image %>
+        <% if current_user.image %>
           <img src="<%= current_user.image %>" >  
         <% else %>
           <%= image_tag "a.png" ,  {width: 50, height: 50}%>
-          <% end %>    
+        <% end %>    
       <% end %>
-        <a class="nav-link col-md-6" href="#">User name</a>
+      <% if user_signed_in? %>
+        <% if current_user.name %>
+          <a class="nav-link col-md-6" href="#">User name</a> 
+        <% end %>    
+      <% end %>
         </div>
       </li>
       <li class="nav-item">

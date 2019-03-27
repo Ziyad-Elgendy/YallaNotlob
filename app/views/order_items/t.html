@@ -43,9 +43,6 @@
         <a class="btn btn-outline-info" data-toggle="modal" data-target="#myModal">
             10 friends invited, click to view
         </a>
-        <a class="btn btn-outline-info" data-toggle="modal" data-target="#modal">
-        5 friends joined, click to view
-      </a>  
         <!-- The Modal -->
         <div class="modal fade" id="myModal">
             <div class="modal-dialog">
@@ -70,7 +67,9 @@
             </div>
         </div>
     </div>
- 
+    <a class="btn btn-outline-info" data-toggle="modal" data-target="#modal">
+        5 friends joined, click to view
+    </a>
     <!-- The Modal -->
     <div class="modal fade" id="modal">
         <div class="modal-dialog">
@@ -94,35 +93,33 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <%= form_with model:  @OrderItem do |form| %>
+        <form>
             <div class="form-row align-items-center">
                 <div class="col-auto">
                     <label class="sr-only" for="inlineFormInput">Item</label>
-                    <input type="text" name="name" class="form-control mb-2" id="inlineFormInput" placeholder="Item">
+                    <input type="text" name="" class="form-control mb-2" id="inlineFormInput" placeholder="Item">
                 </div>
                 <div class="form-row align-items-center">
                     <div class="col-auto">
                         <label class="sr-only" for="inlineFormInput">Amount</label>
-                        <input type="number" name="amount" class="form-control mb-2" id="inlineFormInput" placeholder="Amount">
+                        <input type="number" name="" class="form-control mb-2" id="inlineFormInput" placeholder="Amount">
                     </div>
                     <div class="form-row align-items-center">
                         <div class="col-auto">
                             <label class="sr-only" for="inlineFormInput">Price</label>
-                            <input type="number" name="price" class="form-control mb-2" id="inlineFormInput" placeholder="Price">
+                            <input type="number" name="" class="form-control mb-2" id="inlineFormInput" placeholder="Price">
                         </div>
                         <div class="form-row align-items-center">
                             <div class="col-auto">
                                 <label class="sr-only" for="inlineFormInput">Comment</label>
-                                <input type="text" name="comment" class="form-control mb-2" id="inlineFormInput" placeholder="Comment">
+                                <input type="text" name="" class="form-control mb-2" id="inlineFormInput" placeholder="Comment">
                             </div>
                             <div class="col-auto">
-                               
-                                <input type="submit" class="btn btn-dark mb-2" value="Add"/>
+                                <button type="submit" class="btn btn-dark mb-2">Add</button>
                             </div>
                         </div>
                     </div>
                 </div> 
-                <% end %>
-
+        </form>
     </div>
 </div>

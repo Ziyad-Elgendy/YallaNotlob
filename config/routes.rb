@@ -9,11 +9,12 @@ Rails.application.routes.draw do
   resources :order_items
  end
 
-#  get 'order_details' => 'order_item#index'
 
- resources :friends
- resources :orders
-
+  get 'welcome/showFriends'
+  resources :friends
+  get 'friends_list' => 'friends#listF'     
+  get 'groups_list' => 'groups#listG'     
+  get 'group_friend_list/:name' => 'groups#listGF'     
 
   root 'welcome#index'
 
