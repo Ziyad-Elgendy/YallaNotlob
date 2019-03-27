@@ -6,9 +6,19 @@ class GroupsController < ApplicationController
       # @group_s = Group.find(params[:id])
       # @friends = @group_s.users
   end
+      
+  def listG
+    @groups = Group.where(user_id: current_user.id)
+    render :json => @groups
+  end
+
+  def listGF
+    @group = Group.where(name: params[:name]).first
+    @groups = Member.where(group_id: @group.id)
+    render :json => @groups, :include => :user
+  end
 
   def show
-    
     @groups = Group.all
     @group = Group.new
     
@@ -29,7 +39,6 @@ class GroupsController < ApplicationController
   def new
     @group = Group.new
   end
-  
   def create
     if group_params[:name] == ""
       respond_to do |format|
@@ -74,7 +83,6 @@ class GroupsController < ApplicationController
     end	 
   end  
       
-
   def addFriend
     #Now i have this friend data from the data base and i already have the groupId
     #get the friend name
@@ -126,7 +134,6 @@ class GroupsController < ApplicationController
           end
       end					
       
-    
     end	
     else
     #it is a robot
@@ -140,13 +147,9 @@ class GroupsController < ApplicationController
   desbbuger
   end
 
-
-
-
   private
   def group_params
     params.require(:group).permit(:name, :user_id)
   end
   
-
 end

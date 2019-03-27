@@ -11,6 +11,7 @@ has_many :inverse_friends, :class_name => "Friend", :foreign_key => "friend_id"
 has_many :notifications
 has_many :members
 has_many :user_orders
+has_many :orders
 has_many :groups
 
 def self.new_with_session(params, session)
