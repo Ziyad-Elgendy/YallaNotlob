@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   devise_scope :user do  
     get '/users/sign_out' => 'devise/sessions#destroy'     
  end
- resources :friends
- resources :orders
+  resources :friends
+  resources :orders
 
 
   root 'welcome#index'
