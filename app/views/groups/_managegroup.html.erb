@@ -1,7 +1,7 @@
 <div class="col-md-8 ">
 <fieldset class="the-fieldset">
-    <legend class="the-legend text-center">"This will change when group chosen "</legend>
 
+    <legend class="the-legend text-center" id="groupName"><%= @group.name %><span>  Group</span></legend>
 
     <!-- The div for add user bar -->
     <div class="row" style="margin-bottom: 25px;">
@@ -20,24 +20,19 @@
 
 
 
-    <!-- The div for show user by 2 in one row -->
+    <!-- The div for show user  -->
+
     <div class="row">
-        <div class="col-md-5" style="border-width:5px; border-style:solid; margin: 5px 15px 5px 15px;">
-                <div class="col-md-4">
-                </div>
-                <div "col-md-8">                               
-                        <p style="font-size:20px;">User Name</p>
-                        <a>Delete </a>
-                </div>
-        </div>
-        <div class="col-md-5" style="border-width:5px; border-style:solid; margin: 5px 15px 5px 15px;">
-            <div class="col-md-4">
-            </div>
-            <div "col-md-8">                               
-                    <p style="font-size:20px;">User Two</p>
-                    <a>Delete </a>
-            </div>       
-        </div>
+    <% @members %>
+    <div class="col-md-4 ">
+    <fieldset class="the-fieldset">
+     <p> hello</p>
+
+    </fieldset>
+</div>
+
+
     </div>
-</fieldset>
+   
+    </fieldset>
 </div>

@@ -1,4 +1,43 @@
 class OrdersController < ApplicationController
+    def new
+        @order =Order.new
+    end
+    def create
+        # puts params[:name]
+        # puts params[:restaurant]
+        # #puts params[friends_invited:[]]
+        # params[:friends_invited].each do |title|
+        #     puts title,12
+        #   end
+        #puts params[:friends_invited]
+        # order_params
+        @order = Order.new
+        @order.name=params[:name]
+        @order.restaurant=params[:restaurant]
+        if(params[:order])
+            @order.img.attach(params[:order][:img])
+        end
+        @order.status="waiting"
+        @order.user=current_user
+        if @order.save
+            if(!params[:friends_invited].empty?)
+                users = JSON.parse params[:friends_invited]
+                users.each do |user|
+                    @userObj = User.find_by name: user
+                    @userOrder = UserOrder.new
+                    @userOrder.order=@order
+                    @userOrder.user=@userObj
+                    @userOrder.status="Invited"
+                    @userOrder.save
+                end
+            end
+            redirect_to orders_path
+        end
+        
+    end 
+    def order_params
+        params.permit(:name,:restaurant,:img)
+    end
     before_action :authenticate_user!
     layout 'application'
     def index
@@ -8,14 +47,7 @@ class OrdersController < ApplicationController
     def show
     end
     
-    def new
-    end
-    
     def edit
-    end
-    
-    def create
-
     end
     
     def update
