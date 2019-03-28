@@ -23,9 +23,10 @@
       </tr>
     </thead>
     <tbody>
+    <% x=0 %>
     <% for order in @orders %>
       <tr>
-        <th scope="row"><%= order.id %></th>
+        <th scope="row"><%= x=x+1 %></th>
         <td><%= order.name %></td>
         <td><%= order.restaurant %></td>
         <td><%= order.count_invited_users(order.id) %></td>
@@ -38,10 +39,10 @@
         <%= link_to 'cancel', order_path(order),
         method: :delete,
         data: { confirm: 'Are you sure?' } %>
-
+        <a href=" <%= order_order_items_path(order) %>" > view </a>
         
         <% else %>
-        <a href=" <%= order_path(order) %>" > view </a>
+        <a href=" <%= order_order_items_path(order) %>" > view </a>
 
 
         <% end %>
