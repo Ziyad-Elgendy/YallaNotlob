@@ -1,12 +1,21 @@
- <% @friends.each do |friend| %>
+<%$flag = 0%>
+ <% @members.each do |friend| %>
+	<% $flag = $flag+1%>
 	<div class="col-sm-offset-1  col-sm-3">
 		<div class="panel-success text-center">
-			<img src= '/images/1.jpeg' class="img-circle" alt="Cinque Terre" width="170" height="150">
+			<img src="http://i66.tinypic.com/zwlr8g.png" class="img-circle" width="20" height="20" alt="Cinque Terre" >
 				<div class="textDesc" align="center">
 					<h4><code><%= friend.user.name %></code></h4>
-					<%= link_to 'Remove', 
-							group_deletefriend_path(@group_s.id, friendId: friend), method: :delete, data: { confirm: 'Are you sure?' }  %>
+				    <%= link_to 'Remove', 
+						group_deletefriend_path(@group_s.id, user_id: friend.user.id),
+						method: :delete, data: { confirm: 'Are you sure?' }  %>
 				</div>
 		</div>
 	</div>
+<%end%>
+
+
+<% if $flag == 0 %>
+	<div class="alert alert-info" role="alert" style='margin-top:40px; margin-left:20px;'> Empty ... Not Have Any Friend In .</div>
+
 <%end%>
