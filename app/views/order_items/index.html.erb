@@ -1,8 +1,11 @@
+
 <p id="notice">
     <%= notice %>
 </p>
 <h1>Order Details</h1>
-
+<%
+if(@order.user_id == current_user.id ) or ( @order.order_items.map(&:user_id).include? current_user.id )%>
+ 
 <div class="row">
     <div class="col-md-7">
         <table class="table">
@@ -178,3 +181,9 @@
 
     </div>
 </div>
+<% else %>
+
+<p>you can not show this order</p> 
+<%= link_to 'go home',  root_path %>    
+
+<%end%>
