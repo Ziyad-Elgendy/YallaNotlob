@@ -5,9 +5,13 @@ Rails.application.routes.draw do
   devise_scope :user do  
     get '/users/sign_out' => 'devise/sessions#destroy'     
  end
+ 
+ resources :orders do
+  resources :order_items
+ end
+
+
   get 'welcome/showFriends'
-  # root 'welcome#showFriends'
-  resources :orders
   resources :friends
   get 'friends_list' => 'friends#listF'     
   get 'groups_list' => 'groups#listG'     
@@ -18,6 +22,7 @@ Rails.application.routes.draw do
   resources :groups
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  
 end
 
 
