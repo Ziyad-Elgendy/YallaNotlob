@@ -52,6 +52,9 @@
         <a class="btn btn-outline-info" data-toggle="modal" data-target="#modal">
         5 friends joined, click to view
       </a>  
+      <a class="btn btn-outline-info" data-toggle="modal" data-target="#myimg">
+       click to view the menu
+      </a>
         <!-- The Modal -->
         <div class="modal fade" id="myModal">
             <div class="modal-dialog">
@@ -77,6 +80,29 @@
         </div>
     </div>
  
+
+    <!-- The Modal -->
+        <div class="modal fade" id="myimg">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                    <% if(@order.img ==0) %>
+                  <p>  there is no menu</p>
+                      
+                       <% else %>
+                       <%=image_tag @order.img , class: "img-responsive", style: "max-height:250px;"%>
+                       <%end%>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+
     <!-- The Modal -->
     <div class="modal fade" id="modal">
         <div class="modal-dialog">
@@ -121,6 +147,7 @@
                                 <label class="sr-only" for="inlineFormInput">Comment</label>
                                 <input type="text" name="comment" class="form-control mb-2" id="inlineFormInput" placeholder="Comment">
                             </div>
+
                             <div class="col-auto">
                                
                                 <input type="submit" class="btn btn-dark mb-2" value="Add"/>

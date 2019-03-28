@@ -3,6 +3,7 @@ class OrderItemsController < ApplicationController
     def index
         @order_item = OrderItem.where(order_id: params[:order_id])
         @invitation = UserOrder.where(order_id: params[:order_id])
+        @order =  Order.find(params[:order_id])
     end
     def create
         @order = Order.find(params[:order_id])
