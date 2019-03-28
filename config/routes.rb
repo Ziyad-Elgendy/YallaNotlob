@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :activities
   # devise_for :users , controllers: { registrations: 'registrations',  :omniauth_callbacks => "users/omniauth_callbacks" } 
   devise_for :users , controllers: { :omniauth_callbacks => "users/omniauth_callbacks" } 
   devise_scope :user do  
@@ -6,7 +7,9 @@ Rails.application.routes.draw do
  end
  
  resources :orders do
-  resources :order_items
+  resources :order_items 
+  resources :user_orders
+  
  end
   get 'welcome/showFriends'
   resources :friends
@@ -19,7 +22,11 @@ Rails.application.routes.draw do
   root 'welcome#index'
   mount ActionCable.server => "/cable"
 
-  resources :groups
+  resources :groups do
+    post 'getName'
+    post 'addFriend'
+    delete 'deletefriend'
+  end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   

@@ -1,24 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
 
-<head>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-
-</head>
-<body>
-
-  <h1 class="title text-center" style='font_color=blue'>Groups</h1>
+  <h1 class="title text-center" style='font_color=blue;margin-bottom:10px;'>Groups</h1>
 
   <!--Add new group-->
   <div class="container">
       
-    <div class="row">
-      <%= form_with model: @group , local:true do |form| %>
-      <label>Group</label>
-      <%= form.text_field :name %>
-      <%= form.submit "Add", class: "btn btn-primary" %>
-      <% end %>
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        
+          <%= form_with model: @group , local:true do |form| %>
+            <div class="row">
+            <div class="col-md-2 ">
+              <h5>Group Name:</h5>
+            </div>
+            <div class="col-md-6">
+              <%= form.text_field :name, class: 'form-control', :rows => 8 %>
+            </div>
+            <div class="col-md-2">
+              <%= form.submit "Add", class: "btn btn-primary text-light btn-sm" %>
+            </div>
+            </div>
+          <% end %>
+      
+      </div>
     </div>
 
 
@@ -32,71 +36,102 @@
     <div class="row">
 
       <div class="col-md-4 ">
-        <div class="panel panel-primary">
-          <div class="panel-heading " ><p style="font-size:25px;text-align: center;">My Groups</p></div>
-
-            <div class="panel-body">
-              <div class="row">
+        <div class="card">
+          <div class="card-header bg-primary text-white" style="margin-bottom:10px;font-size:25px;text-align:center;" >My Groups</div>          
+            <div class="card-block bg-light">
               <% @groups.each do |group| %>
+              <div class="row " style="margin-top:-7px;margin-bottom:-7px;">
                 <div class="col-md-5">
-                  <p style="font-size:20px" ><%= group.name %>'  '<%= group.id %></p>         
+                  <p style="font-size:20px; margin-left:15px; " ><%= group.name %></p>         
                 </div>
-
                 <div class="col-md-3">
-                  <%= link_to 'Select',  group_path(group), class:"btn btn-primary" %>
+                  <%= link_to 'Select',  group_path(group), class:"btn btn-primary text-light btn-sm" %>
                 </div>
-
                 <div class="col-md-3">
                     <%= link_to 'Destroy', group_path(group),
                     method: :delete,
-                    data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
-                </div>
-                <% end %>
+                    data: { confirm: 'Are you sure?' }, class: "btn btn-danger text-light btn-sm" %>
+                </div> 
               </div>
+              <hr  style='color:lightgray;height:.5px;background:lightgray' >
+              <% end %>
             </div>
-          </div>
-
+          </div>   
         </div>
+
 
       
       <!-- The group managing div -->
       <div class='col-md-8 '>
-      <div class="panel  panel-success">
-        <div class="panel-heading" style="font-size:25px;text-align: center;">  
-          <% if @group_s %>
-            <%= @group_s.name %>
-            <%else%>
-              Select Group
-          <%end%>
-        </div>
-        <div class="panel-body">
-        <div>
-            <% if @group_s %>
-              <%= form_tag("/groups/#{ @group_s.id}/addFriend", method: "post", class: "nifty_form") do %>
-                  <%= label_tag(:name, "Your Friend Name :") %>
-                  <%= text_field_tag(:name) %>
-                  <%= hidden_field_tag(:groupId, @group_s.id) %>
-                  <%= submit_tag("Add") %>
+        <div class="card">
+          <div class="card-header bg-success text-white" style="font-size:25px; text-align:center;">  
+              <% if @group_s %>
+                <%= @group_s.name %>
+                <%else%>
+                  Select Group
+                <%end%>
+          </div>
+          <!-- The body of the card start from here -->
+          <div class="card-body bg-light">
+            <div id="addFriendToList" class="row justify-content-center">
+                <% if @group_s %>
+                  <%= form_tag("/groups/#{ @group_s.id}/addFriend", method: "post", class: "nifty_form") do %>
+                      <%= label_tag(:name, "Your Friend Name :") %>
+                      <%= text_field_tag(:name , nil, class: 'auto')  %>
+                      <%= hidden_field_tag(:groupId, @group_s.id) %>
+                      <%= submit_tag("Add", class: "btn btn-success text-light btn-sm") %>
+                  <% end %>              
+            </div>
 
-                <% end %>
-            
+              <div class="row" style='margin-top:40px;margin-left:20px'>
+                  <%= render :file => 'groups/show' %>
+              </div>	
+              <%end%>
+
+          <!--card-body-->
+          </div>
+        <!-- card-->
         </div>
-        <div>
-          <% if !@friends %>
-            <div class="row" style='margin-top:40px;'>
-                <%= render :file => 'groups/show' %>
-            </div>	
-            <% else %>
-            <div class="alert alert-info" role="alert" style='margin-top:40px;'> Empty ... Not Have Any Friend In .</div>
-          <%end%>
-          <%end%>
-        </div>
-        </div>
+      <!-- The group managing div -->
+      </div>
+    <!-- The container of listgroups & manage group -->
     </div>
-
-
-
-
+  <!--container-->
   </div>
-</body>
-</html>
+
+<script>
+$(document).ready(function(){
+let friendsList = [];
+	console.log("HELLO")
+	loadFriends();
+    async function loadFriends(){
+	console.log("HELLO2")
+
+        let friends = await fetch("/friends_list/", {method: "GET"}).then(res=>res.json());
+	console.log("HELLO3")
+
+        friends.map(friend=>{
+          if(friend.friend.name != null){
+            friendsList.push(friend.friend.name)
+          }
+        })
+		console.log(friendsList);
+
+				 $(".auto").autocomplete({
+					source: friendsList
+				});
+		}
+	
+	// $('#autocomplete').suggest({'@' : {
+	// 		data: friendsList,
+	// 		map: function(user) {
+	// 				return {
+	// 						value: user.username,
+	// 						text: '<strong>'+user.username+'</strong> <small>'+user.type+'</small>'
+	// 				}
+	// })
+
+
+})
+  
+</script>

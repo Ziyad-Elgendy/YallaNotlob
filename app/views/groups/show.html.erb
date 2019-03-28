@@ -1,12 +1,32 @@
- <% @friends.each do |friend| %>
-	<div class="col-sm-offset-1  col-sm-3">
-		<div class="panel-success text-center">
-			<img src= '/images/1.jpeg' class="img-circle" alt="Cinque Terre" width="170" height="150">
-				<div class="textDesc" align="center">
-					<h4><code><%= friend.user.name %></code></h4>
-					<%= link_to 'Remove', 
-							group_deletefriend_path(@group_s.id, friendId: friend), method: :delete, data: { confirm: 'Are you sure?' }  %>
-				</div>
-		</div>
-	</div>
+<%$flag = 0%>
+
+ <% @members.each do |friend| %>
+	<% $flag = $flag+1%>
+  
+		<div class='row col-md-5 border border-secondary border-10' style="margin-right:20px;margin-left:20px;margin-bottom:20px;">
+			<div class='col-md-3' >        
+          <% if friend.user.image %>
+          <img src="<%= friend.user.image %>" class="img-circle mx-auto img " style="margin-top:7px;" width="40" height="40">  
+        <% else %>
+        <%= image_tag "a.png" ,{width: 50, height: 50} %>
+          <% end %>    
+
+
+			</div>
+			<div class='textDesc col-md-6' align="center">
+				<h4><code><%= friend.user.name %></code></h4>
+				<%= link_to 'Remove', 
+				group_deletefriend_path(@group_s.id, user_id: friend.user.id),
+				method: :delete, data: { confirm: 'Are you sure?' }  %>
+			</div>	
+		</div>	
+
 <%end%>
+
+
+<% if $flag == 0 %>
+	<div class="alert alert-info" role="alert" style='margin-top:40px;margin-left:20px;'> Empty ... Not Have Any Friend In .</div>
+
+<%end%>
+
+

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Yala Ntlob</a>
+  <a class="navbar-brand" href="#">Yalla Notlob</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -57,25 +57,27 @@
         </div>
     </li>
   </li>
-      <li class="nav-item ">
-      <div class="row">
-      <% if user_signed_in? %>
-        <% if current_user.image %>
-          <img src="<%= current_user.image %>" >  
-        <% else %>
-          <%= image_tag "a.png" ,  {width: 50, height: 50}%>
-        <% end %>    
-      <% end %>
-      <% if user_signed_in? %>
-        <% if current_user.name %>
-          <a class="nav-link col-md-6" href="#">User name</a> 
-        <% end %>    
-      <% end %>
+  <li class="nav-item ">
+    <div class="row">
+          <% if user_signed_in? %>
+            <% if current_user.image %>
+              <%= image_tag  current_user.image , {width: 50, height: 50} %>  
+            <% else %>
+              <%= image_tag "a.png" , {width: 50, height: 50}%>
+            <% end %>    
+          <% end %>
+          <% if user_signed_in? %>
+            <% if current_user.name %>
+              <a class="nav-link col-md-6" href="#"><%= current_user.name %></a> 
+            <% end %>    
+          <% end %>
         </div>
       </li>
-      <li class="nav-item">
-           <%= link_to('Logout', destroy_user_session_path, method: :delete) %>   
-      </li>
+      <% if user_signed_in? %>
+          <li class="nav-item">
+              <%= link_to('Logout', destroy_user_session_path, method: :delete) %>   
+          </li>
+      <% end %>
     </ul>
   </div>
 </nav>

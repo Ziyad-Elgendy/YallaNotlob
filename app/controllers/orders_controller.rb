@@ -2,9 +2,9 @@ class OrdersController < ApplicationController
     def new
         @order =Order.new
         @orderId = Order.last(1).first.id
-        puts "ORDERID++++++++++++++++++++++"
-        puts @orderId 
-        puts "ORDERID++++++++++++++++++++++"
+        # puts "ORDERID++++++++++++++++++++++"
+        # puts @orderId 
+        # puts "ORDERID++++++++++++++++++++++"
     end
     def create
         # puts params[:name]
@@ -21,9 +21,11 @@ class OrdersController < ApplicationController
         if(params[:order])
             @order.img.attach(params[:order][:img])
         end
+        
         @order.status="waiting"
         @order.user=current_user    
         if @order.save
+            @order.create_activity :create
             if(!params[:friends_invited].empty?)
                 users = JSON.parse params[:friends_invited]
                 users.each do |user|
@@ -42,7 +44,15 @@ class OrdersController < ApplicationController
                     @userOrder.save
                 end
             end
+            # activity = new Activity.new
+            # activity.activity = "has created new order for "+@order.name + " from "+ @order
+            # activity.user_id = current_user.id
+            # activity.order_id = @order
+            # if activity.save
+
             redirect_to orders_path
+           
+            # end
         end
         
     end 
@@ -52,12 +62,10 @@ class OrdersController < ApplicationController
     before_action :authenticate_user!
     layout 'application'
     def index
-        @orders = current_user.user_orders.where(:status => 'owner')
+        @orders = current_user.orders
     end
     
-    def show
-    end
-    
+   
     def edit
     end
     

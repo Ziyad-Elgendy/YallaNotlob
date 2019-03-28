@@ -1,14 +1,9 @@
 <div class="container">
     <h1 class="title">My Friends</h1>
-    <div class="row">
-    <%= form_with model: @friend, local: true do |form| %>
- 
-    
-    </div>
+        <%= form_with model: @friend, local: true do |form| %>
     <div class="row">
         <div class="col-md-3 ">
-            <%= form.label :email %><br>
-             
+            <%= form.label :email %><br> 
         </div>
         <div class="col-md-4">
             <%= form.email_field :email, class:'form-control' %>
@@ -23,29 +18,19 @@
         <div class="col-md-12">
             <h3> Friends List </h3>
         </div>
-        <% if flash[:notice] %>
-            <div class="notice"><%= flash[:notice] %></div>
-        <% end %>
-        <% if flash[:error] %>
-            <div class="error"><%= flash[:error] %></div>
-        <% end %>
+   
       <% for friend in @friends %>
-        
       <div class="col-md-4">
       <div class="row">
           <div class="col-md-5">
-
           <% if friend.friend.image %>
           <img src="<%= friend.friend.image %>" class="col-md-12">  
         <% else %>
         <%= image_tag "a.png" ,class:"col-md-12" %>
-
           <% end %>    
-
           </div>
           <div class="col-md-7">
               <span class="col-md-12"> <%= friend.friend.name %> </span>
-            
               <%= link_to 'unfriend', friend_path(friend),
               method: :delete,
               data: { confirm: 'Are you sure?' } %>
