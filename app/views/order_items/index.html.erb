@@ -146,6 +146,7 @@ if(@order.user_id == current_user.id ) or ( @order.order_items.map(&:user_id).in
         </div>
     </div>
 </div>
+<% if (@order.status != "finished") %>
 <div class="row">
     <div class="col-md-12">
         <%= form_with model:  @OrderItem do |form| %>
@@ -181,6 +182,7 @@ if(@order.user_id == current_user.id ) or ( @order.order_items.map(&:user_id).in
 
     </div>
 </div>
+<%end%>
 <% else %>
 
 <p>you can not show this order</p> 
