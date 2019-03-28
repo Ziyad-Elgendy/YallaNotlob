@@ -18,9 +18,10 @@
                 </tr>
             </thead>
             <tbody>
+            <% x=0 %>
                 <% @order_item.each do |item|  %>
                 <tr>
-                    <th scope="col"><%= item.id %></th>
+                    <th scope="col"><%= x=x+1 %></th>
                     <th scope="col">
                         <%= item.user.name %>
                     </th>
@@ -47,10 +48,10 @@
     </div>
     <div class="col-md-5">
         <a class="btn btn-outline-info" data-toggle="modal" data-target="#myModal">
-            10 friends invited, click to view
+        <%= @invitation.count %> friends invited, click to view
         </a>
         <a class="btn btn-outline-info" data-toggle="modal" data-target="#modal">
-        5 friends joined, click to view
+        <%= @joined.count %> friends joined, click to view
       </a>  
         <!-- The Modal -->
         <div class="modal fade" id="myModal">
@@ -65,8 +66,9 @@
                         </div>            
                         <%= friend.user.name %>
                         </br>
-                        <button type="button" class="btn btn-outline-info">Remove</button>
-                        <% end %>
+                        <%= link_to 'Delete item',  order_user_order_path(friend.order_id,friend.id),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' } %>                        <% end %>
                     </div>
                 </div>
                 <!-- Modal footer -->
@@ -83,12 +85,29 @@
             <div class="modal-content">
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <div class="row">
-                        <img src="/assets/a-2205a102f198f437f576b28bc3518eefd26d163c8231b9fd7e3d4423e2e97ad7.png" width="50"
-                            height="50">
+                <% @joined.each do |user|  %>
+                <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-5">
+          
+                    <% if user.image %>
+                    <img src="<%= user.user.image %>" class="col-md-12">  
+                  <% else %>
+                  <%= image_tag "a.png" ,class:"col-md-12" %>
+          
+                    <% end %>    
+          
                     </div>
-                    Ahmed Ali</br>
-                    <button type="button" class="btn btn-outline-info">Remove</button>
+                    <div class="col-md-7">
+                        <span class="col-md-12"> <%= user.user.name %> </span>
+                      
+                        <%= link_to 'remove',  order_user_order_path(user.order_id,user.id),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' } %>
+                    </div>
+                    </div>
+                </div>
+                <%end%>
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
