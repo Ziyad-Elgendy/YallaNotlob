@@ -1,4 +1,4 @@
-<body>
+
 
   <h1 class="title text-center" style='font_color=blue;margin-bottom:10px;'>Groups</h1>
 
@@ -6,22 +6,23 @@
   <div class="container">
       
     <div class="row justify-content-center">
-      <div class="col-md-1"></div>
-      <div class="col-md-2 ">
-        <%= form_with model: @group , local:true do |form| %>
-
-        <h5>Group Name:</h5>
+      <div class="col-md-10">
+        
+          <%= form_with model: @group , local:true do |form| %>
+            <div class="row">
+            <div class="col-md-2 ">
+              <h5>Group Name:</h5>
+            </div>
+            <div class="col-md-6">
+              <%= form.text_field :name, class: 'form-control', :rows => 8 %>
+            </div>
+            <div class="col-md-2">
+              <%= form.submit "Add", class: "btn btn-primary text-light btn-sm" %>
+            </div>
+            </div>
+          <% end %>
+      
       </div>
-      <div class="col-md-6">
-        <%= form.text_field :name, class: 'form-control', :rows => 8 %>
-      </div>
-      <div class="col-md-2">
-        <%= form.submit "Add", class: "btn btn-primary text-light btn-sm" %>
-        <% end %>
-      </div>
-      <div class="col-md-1"></div>
-
-
     </div>
 
 
@@ -72,11 +73,11 @@
           </div>
           <!-- The body of the card start from here -->
           <div class="card-body bg-light">
-            <div class="row justify-content-center">
+            <div id="addFriendToList" class="row justify-content-center">
                 <% if @group_s %>
                   <%= form_tag("/groups/#{ @group_s.id}/addFriend", method: "post", class: "nifty_form") do %>
                       <%= label_tag(:name, "Your Friend Name :") %>
-                      <%= text_field_tag(:name) %>
+                      <%= text_field_tag(:name , nil, class: 'auto')  %>
                       <%= hidden_field_tag(:groupId, @group_s.id) %>
                       <%= submit_tag("Add", class: "btn btn-success text-light btn-sm") %>
                   <% end %>              
@@ -97,4 +98,40 @@
     </div>
   <!--container-->
   </div>
-</body>
+
+<script>
+$(document).ready(function(){
+let friendsList = [];
+	console.log("HELLO")
+	loadFriends();
+    async function loadFriends(){
+	console.log("HELLO2")
+
+        let friends = await fetch("/friends_list/", {method: "GET"}).then(res=>res.json());
+	console.log("HELLO3")
+
+        friends.map(friend=>{
+          if(friend.friend.name != null){
+            friendsList.push(friend.friend.name)
+          }
+        })
+		console.log(friendsList);
+
+				 $(".auto").autocomplete({
+					source: friendsList
+				});
+		}
+	
+	// $('#autocomplete').suggest({'@' : {
+	// 		data: friendsList,
+	// 		map: function(user) {
+	// 				return {
+	// 						value: user.username,
+	// 						text: '<strong>'+user.username+'</strong> <small>'+user.type+'</small>'
+	// 				}
+	// })
+
+
+})
+  
+</script>

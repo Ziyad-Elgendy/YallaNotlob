@@ -64,26 +64,39 @@ class GroupsController < ApplicationController
     end
   end
       
+  def update
+    @group = Group.find(params[:id])
+    respond_to do |format|
+      if @group.update(group_params)
+        format.html { redirect_to @group, notice: 'Group was successfully updated.' }
+        format.json { render :show, status: :ok, location: @group }
+      else
+        format.html { render :edit }
+        format.json { render json: @group.errors, status: :unprocessable_entity }
+      end
+    end
+  end 
+
   def destroy
     @group = Group.find(params[:id])
     @user = @group.user_id
-    if @user == current_user.id
-      @group.destroy
-      def goto_groups_page
-        redirect_to groups_path(@group) #return not needed
+    if @user == current_user.id 
+      if @group.destroy
+        goto_groups_page
+      else
+        respond_to do |format|
+          format.html { redirect_to groups_path, notice: 'You cannot delete the group ' }
+          format.json { head :no_content }
+        end
       end
-      # respond_to do |format|
-      # format.html { redirect_to groups_path, notice: 'Group was successfully destroyed.' }
-      # format.json { head :no_content }
-      # end
-    end
-    respond_to do |format|
-      format.html { redirect_to groups_path, notice: 'You can\'t delete the group ' }
-      format.json { head :no_content }
-    end	 
-  end  
+    end 
+  end
+
   def goto_groups_page
-    redirect_to groups_path(@group) 
+    respond_to do |format|
+      format.html { redirect_to groups_path, notice: 'Group was successfully deleted.' }
+      format.json { head :no_content }
+    end
   end      
 
 
@@ -104,7 +117,7 @@ class GroupsController < ApplicationController
         #check if he is tring to add himself
         if @friendName == current_user.name	
           respond_to do |format|
-            format.html { redirect_back fallback_location: root_path, notice: 'Cant inser your self!' }
+            format.html { redirect_back fallback_location: root_path, notice: 'Cant insert your self!' }
             format.json { head :no_content }
           end
         else	
@@ -166,4 +179,4 @@ class GroupsController < ApplicationController
     params.require(:group).permit(:name, :user_id)
   end
   
-end
+end 
