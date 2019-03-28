@@ -21,10 +21,19 @@ class GroupsController < ApplicationController
   def show
     @groups = Group.all
     @group = Group.new
+    
     @group = Group.find(params[:id])
+    search = @group.id
     @group_s = Group.find(params[:id])
+    @friends = Member.where(group_id: search)
+    # puts "===================="
+    @friends.each do |i|
+      puts i.user.name
+    end
+    # puts "===================="
     @friends = @group_s.users
     render :index
+# debugger
   end 
 
   def new
@@ -35,7 +44,7 @@ class GroupsController < ApplicationController
       respond_to do |format|
         format.html { redirect_to groups_path, notice: 'Group was Empty Cant created.' }
       end
-			
+
     else
       if current_user.groups.exists? name: group_params[:name]
 				#this group is already exist
@@ -135,7 +144,7 @@ class GroupsController < ApplicationController
     end	
   end
   end		
-
+  desbbuger
   end
 
   private

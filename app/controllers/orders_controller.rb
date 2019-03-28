@@ -1,6 +1,10 @@
 class OrdersController < ApplicationController
     def new
         @order =Order.new
+        @orderId = Order.last(1).first.id
+        puts "ORDERID++++++++++++++++++++++"
+        puts @orderId 
+        puts "ORDERID++++++++++++++++++++++"
     end
     def create
         # puts params[:name]
@@ -18,7 +22,7 @@ class OrdersController < ApplicationController
             @order.img.attach(params[:order][:img])
         end
         @order.status="waiting"
-        @order.user=current_user
+        @order.user=current_user    
         if @order.save
             if(!params[:friends_invited].empty?)
                 users = JSON.parse params[:friends_invited]
@@ -27,7 +31,7 @@ class OrdersController < ApplicationController
                     @notification = Notification.new
                     @notification.order=@order
                     @notification.user=@userObj
-                    @notification.type="Join"
+                    @notification.typeOfMessage="Join"
                     @notification.status="Unread"
                     @notification.text= current_user.name + " invited you to his order"
                     @notification.save
@@ -59,7 +63,6 @@ class OrdersController < ApplicationController
     
     def update
         @order = Order.find(params[:id])
-   
       if @order.update(:status => 'finished')
         redirect_to orders_path
       else

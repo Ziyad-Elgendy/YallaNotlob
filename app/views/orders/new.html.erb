@@ -51,15 +51,17 @@
         </fieldset>
     </div>
 </div>  
-<button id="send">Send Message</button>
-    
+<button onclick="sendNotification()">Send Message</button>
+       
 <%= javascript_include_tag "bootstrap-suggest.min.js" %>
 <script>
     $( document ).ready(function() {
         const container = document.getElementById("invitedContainer");
         let newElement = document.createElement('div');
     });
+    let current_user_name = "<%= current_user.name %>";
     let current_user_id = <%= current_user.id.to_json %> ;
+    console.log(current_user_name);
     let selectedUsers = [];
     let selectedGroups = [];
     let friendsList = [];
@@ -87,7 +89,9 @@
             console.log("item",item)
             if(item.text.endsWith("Friend")){
                     if(!isExist(item.value))
-                        selectedUsers = [...selectedUsers,item]
+                        selectedUsers = [...selectedUsers,{value:item.value,id: friendsList[item.index].id}]
+                    console.log("FriendsArray",selectedUsers);
+
             }
             else {
                 // if group not exist
@@ -97,8 +101,9 @@
                     console.log(selectedGroups);
                     friends.map(friend=>{
                         if(!isExist(friend.user.name,item.value))
-                          selectedUsers = [...selectedUsers,{value:friend.user.name,groupName:item.value}]
+                          selectedUsers = [...selectedUsers,{value:friend.user.name,groupName:item.value,id: friend.user_id}]
                     })
+
                 }
             }
             insertInvited();
@@ -106,6 +111,18 @@
         }})
     }
     
+   //send Notification to all user
+    function sendNotification(){
+        //msg format userid,type,orderid,msg
+        console.log("SELECTUESER",selectedUsers);
+        selectedUsers.map(user=>{
+            const msg = `${user.id},Invitation,${current_user_name}`;
+            App.notification.send_msg(msg)
+            console.log("MESSAGE SENT");
+        })
+    }
+    
+
     // check if friend is exist in selectUser or not
     function isExist(friendName,groupName){
         let ret=false;
@@ -122,8 +139,18 @@
     function insertInvited(){
         let container = document.getElementById("invitedContainer");
         container.innerHTML="";
+       // <% if current_user.image != nil %><img src=<%= current_user.image %> >  <% else %><%= image_tag "a.png" ,  {width: 50, height: 50}%><% end %>'
         selectedUsers.map(item=>{
-            let newElem = '<div class="col-md-4"> <% if current_user.image %><img src="<%= current_user.image %>" >  <% else %><%= image_tag "a.png" ,  {width: 50, height: 50}%><% end %>'+
+            let imgE ="";
+            console.log(item);
+            /*if(item.image)
+                imgE=`<img src=${item.image}/>`;
+            else   imgE="<img src='/assets/images/a.png'/>";
+            let newElem = '<div class="col-md-4">' + "<%= image_tag "a.png" ,  {width: 50, height: 50}%>"
+            '<p class="text-center col-md-12"> '+item.value+'</p>'+
+            '<button id='+item.value+' item.value" onclick="removeInviation(event)" class="btn btn-danger col-md-12"> remove </button></div>';
+            */
+            let newElem = '<div class="col-md-4"> <%= image_tag "a.png" %>'+
             '<p class="text-center col-md-12"> '+item.value+'</p>'+
             '<button id='+item.value+' item.value" onclick="removeInviation(event)" class="btn btn-danger col-md-12"> remove </button></div>';
             container.innerHTML+=newElem;
@@ -167,10 +194,11 @@
     }
 
 
-    App.notification.received = function(data)
+   /* App.notification.received = function(data)
     {
         alert(data['message'])
     }
+    */
     
     $("#send").click(function(){
         msg = "HELLO"

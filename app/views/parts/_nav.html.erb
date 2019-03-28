@@ -31,7 +31,6 @@
           <%= image_tag "notif.png", {width: 35, height: 35} %>
         </a>
         <div id="notificationContainer"> 
-        <%= link_to ("See All") , notifications_path %>
           <div id="notificationTitle">
             Notifications
           </div>
@@ -41,10 +40,14 @@
                 <% if item.typeOfMessage == "Join" %> 
                     <div class="notify"> 
                       <%= item.text %>
-                       <a href=<%= "/order" %> >Order</a>
+                       <a onclick="sendJoinNotification(event)" href=<%= "/orders/"+item.order.id.to_s+"/order_items?join=true" %> >Join</a>
                     </div>
-
-                <% end %>
+                    <% else %>  
+                      <div class="notify"> 
+                        <%= item.text %>
+                        <a href=<%= "/orders/"+item.order.id.to_s+"/order_items" %> >Order</a>
+                      </div>
+                  <% end %>
               <% end %>
             <% end %>
           </div>
@@ -96,10 +99,49 @@ $("#notificationLink").click(function()
 {
   $("#notificationContainer").fadeToggle(300);
   $("#notification_count").fadeOut("slow");
-  return false;
+  fetch("/make_all_read/", {method: "GET"});
+   return false;
 });
 
 
 
 });
+console.log("Start Listening SENT");
+App.notification.received = function(data)
+{
+    console.log("Message SENT")
+    //msg format userid,type,name,orderid
+    $("#notification_count").fadeIn("slow");
+    console.log(data['message']);
+    const counterElement= document.getElementById("notification_count");
+    const notificationsBody = document.getElementById("notificationsBody");
+    counterElement.innerHTML=parseInt(counterElement.innerHTML)+1;
+    const msg= data['message'].split(",");
+    const newNotification = document.createElement("div");
+    newNotification.className="notify";
+    const linkTag =  document.createElement("a");
+    if(msg[1]=="Invitation"){
+      newNotification.innerHTML=msg[2]+" Invited you his order ";
+      linkTag.href="/orders/"+msg[3]+"/order_items?join=true";
+      linkTag.innerHTML="Join";
+    }
+    else {
+      newNotification.innerHTML=msg[2]+" Joined your "+msg[3];
+      linkTag.href="/orders/"+msg[0]+"/order_items";
+      linkTag.innerHTML="order";
+    }
+    newNotification.appendChild(linkTag);
+    notificationsBody.appendChild(newNotification);
+}
+
+
+//send Join Notification to Order Owner
+function sendJoinNotification(event){
+    // msg format orderId,Joined
+    const OrderId=event.target.getAttribute('href').split("/")[2];
+    const msg =OrderId+","+"Joined";
+    App.notification.send_msg(msg)
+    console.log("MESSAGE SENT",);
+}
+
 </script>
