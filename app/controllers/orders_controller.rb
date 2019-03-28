@@ -69,8 +69,6 @@ class OrdersController < ApplicationController
     end
     
     def destroy
-        UserOrder.where(:order_id => params[:id]).destroy_all
-        OrderItem.where(:order_id => params[:id]).destroy_all
         @order = Order.find(params[:id])
         @order.destroy
      

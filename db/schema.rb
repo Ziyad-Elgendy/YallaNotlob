@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_26_190125) do
+ActiveRecord::Schema.define(version: 2019_03_28_220629) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -76,6 +76,10 @@ ActiveRecord::Schema.define(version: 2019_03_26_190125) do
     t.string "status"
     t.bigint "order_id"
     t.bigint "user_id"
+    t.string "text"
+    t.string "typeOfMessage"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["order_id"], name: "index_notifications_on_order_id"
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
@@ -99,6 +103,8 @@ ActiveRecord::Schema.define(version: 2019_03_26_190125) do
     t.string "img", limit: 500
     t.string "status", limit: 20
     t.bigint "user_id"
+    t.timestamp "created_at"
+    t.timestamp "updated_ar"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -128,13 +134,13 @@ ActiveRecord::Schema.define(version: 2019_03_26_190125) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "groups", "users"
-  add_foreign_key "members", "groups"
+  add_foreign_key "members", "groups", on_delete: :cascade
   add_foreign_key "members", "users"
-  add_foreign_key "notifications", "orders"
+  add_foreign_key "notifications", "orders", on_delete: :cascade
   add_foreign_key "notifications", "users"
-  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "orders", on_delete: :cascade
   add_foreign_key "order_items", "users"
   add_foreign_key "orders", "users"
-  add_foreign_key "user_orders", "orders"
+  add_foreign_key "user_orders", "orders", on_delete: :cascade
   add_foreign_key "user_orders", "users"
 end
