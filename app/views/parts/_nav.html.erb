@@ -18,38 +18,132 @@
         <a class="nav-link" href=<%= groups_path %> >Groups</a>
       </li>
     </ul>
-    <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%= image_tag "notif.png" , {width: 30, height: 30} %>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+    <ul class="navbar-nav " >
+    <li id="notification_li">
+        <span id="notification_count">
+        <%  if user_signed_in?  %>
+        <%= @notifications.count %>
+        <% else %>
+        <%= 0 %>
+        <% end %> 
+        </span>
+        <a href="#" id="notificationLink">
+          <%= image_tag "notif.png", {width: 35, height: 35} %>
+        </a>
+        <div id="notificationContainer"> 
+          <div id="notificationTitle">
+            Notifications
           </div>
-        </li>
-        <li class="nav-item ">
-          <div class="row">
-            <% if user_signed_in? %>
-              <% if current_user.image %>
-                <%= image_tag  current_user.image , {width: 50, height: 50} %>  
-              <% else %>
-                <%= image_tag "a.png" , {width: 50, height: 50}%>
-              <% end %>    
-            <% end %>
-            <% if user_signed_in? %>
-              <% if current_user.name %>
-                <a class="nav-link col-md-6" href="#"><%= current_user.name %></a> 
-              <% end %>    
+          <div id="notificationsBody" class="notifications">
+            <%  if user_signed_in?  %>
+              <% @notifications.each do |item| %>
+                <% if item.typeOfMessage == "Join" %> 
+                    <div class="notify"> 
+                      <%= item.text %>
+                       <a onclick="sendJoinNotification(event)" href=<%= "/orders/"+item.order.id.to_s+"/order_items?join=true" %> >Join</a>
+                    </div>
+                    <% else %>  
+                      <div class="notify"> 
+                        <%= item.text %>
+                        <a href=<%= "/orders/"+item.order.id.to_s+"/order_items" %> >Order</a>
+                      </div>
+                  <% end %>
+              <% end %>
             <% end %>
           </div>
-        </li>
-        <% if user_signed_in? %>
+          <div id="notificationFooter">
+            <%= link_to ("See All") , notifications_path %>
+          </div>
+        </div>
+    </li>
+  </li>
+  <li class="nav-item ">
+    <div class="row">
+          <% if user_signed_in? %>
+            <% if current_user.image %>
+              <%= image_tag  current_user.image , {width: 50, height: 50} %>  
+            <% else %>
+              <%= image_tag "a.png" , {width: 50, height: 50}%>
+            <% end %>    
+          <% end %>
+          <% if user_signed_in? %>
+            <% if current_user.name %>
+              <a class="nav-link col-md-6" href="#"><%= current_user.name %></a> 
+            <% end %>    
+          <% end %>
+        </div>
+      </li>
+      <% if user_signed_in? %>
           <li class="nav-item">
               <%= link_to('Logout', destroy_user_session_path, method: :delete) %>   
           </li>
-        <% end %>
+      <% end %>
     </ul>
   </div>
 </nav>
+
+<script>
+$(document).ready(function()
+{
+    //Document Click hiding the popup 
+$(document).click(function()
+{
+$("#notificationContainer").hide();
+});
+
+//Popup on click
+$("#notificationContainer").click(function()
+{
+  // return false;
+});
+
+$("#notificationLink").click(function()
+{
+  $("#notificationContainer").fadeToggle(300);
+  $("#notification_count").fadeOut("slow");
+  fetch("/make_all_read/", {method: "GET"});
+   return false;
+});
+
+
+
+});
+console.log("Start Listening SENT");
+App.notification.received = function(data)
+{
+    console.log("Message SENT")
+    //msg format userid,type,name,orderid
+    $("#notification_count").fadeIn("slow");
+    console.log(data['message']);
+    const counterElement= document.getElementById("notification_count");
+    const notificationsBody = document.getElementById("notificationsBody");
+    counterElement.innerHTML=parseInt(counterElement.innerHTML)+1;
+    const msg= data['message'].split(",");
+    const newNotification = document.createElement("div");
+    newNotification.className="notify";
+    const linkTag =  document.createElement("a");
+    if(msg[1]=="Invitation"){
+      newNotification.innerHTML=msg[2]+" Invited you his order ";
+      linkTag.href="/orders/"+msg[3]+"/order_items?join=true";
+      linkTag.innerHTML="Join";
+    }
+    else {
+      newNotification.innerHTML=msg[2]+" Joined your "+msg[3];
+      linkTag.href="/orders/"+msg[0]+"/order_items";
+      linkTag.innerHTML="order";
+    }
+    newNotification.appendChild(linkTag);
+    notificationsBody.appendChild(newNotification);
+}
+
+
+//send Join Notification to Order Owner
+function sendJoinNotification(event){
+    // msg format orderId,Joined
+    const OrderId=event.target.getAttribute('href').split("/")[2];
+    const msg =OrderId+","+"Joined";
+    App.notification.send_msg(msg)
+    console.log("MESSAGE SENT",);
+}
+
+</script>

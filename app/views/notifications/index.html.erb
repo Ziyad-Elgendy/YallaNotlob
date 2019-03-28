@@ -1,0 +1,16 @@
+<ul class="list-group">
+  <% @allnotifications.each do |item| %>
+    <% if item.typeOfMessage == "Join" %> 
+        <li class="list-group-item"> 
+          <%= item.text %>
+           <a href=<%= "/orders/"+item.order.id.to_s+"/order_items?join=true" %> >Join</a>
+        </li>
+        <% else %>  
+          <li class="list-group-item"> 
+            <%= item.text %>
+            <a href=<%= "/orders/"+item.order.id.to_s+"/order_items" %> >Order</a>
+          </li>
+      <% end %>
+  <% end %>
+</ul>
+

@@ -11,15 +11,16 @@ Rails.application.routes.draw do
   resources :user_orders
   
  end
-
-
   get 'welcome/showFriends'
   resources :friends
+  resources :notifications
   get 'friends_list' => 'friends#listF'     
   get 'groups_list' => 'groups#listG'     
+  get 'make_all_read' => 'notifications#makeAllRead'
   get 'group_friend_list/:name' => 'groups#listGF'     
 
   root 'welcome#index'
+  mount ActionCable.server => "/cable"
 
   resources :groups do
     post 'getName'

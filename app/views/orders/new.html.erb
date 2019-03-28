@@ -31,15 +31,14 @@
         </div>
         <div class="form-group row">
             <label class="col-md-4 col-form-label">Menu Image :</label>
-            <div class="col-md-8">
-            <%= form.file_field :img %>
-                <div class="custom-file">
-                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-                </div>
+       
+            <div class="col-md-8" class="custom-file">
+                <input type="file" name="img" class="custom-file-input" id="inputGroupFile01">
+                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
             </div>
         </div>  
         <input type="hidden" name="friends_invited" id="friends_invited">
-        <button class="btn btn-primary" type="submit">Publish</button>
+        <button onclick="sendNotification()" class="btn btn-primary" type="submit">Publish</button>
     <% end %>
 
     <div class="col-md-6">
@@ -51,14 +50,17 @@
         </fieldset>
     </div>
 </div>  
-
+<!-- <button onclick="sendNotification()">Send Message</button> -->
+       
 <%= javascript_include_tag "bootstrap-suggest.min.js" %>
 <script>
     $( document ).ready(function() {
         const container = document.getElementById("invitedContainer");
         let newElement = document.createElement('div');
     });
+    let current_user_name = "<%= current_user.name %>";
     let current_user_id = <%= current_user.id.to_json %> ;
+    console.log(current_user_name);
     let selectedUsers = [];
     let selectedGroups = [];
     let friendsList = [];
@@ -86,7 +88,9 @@
             console.log("item",item)
             if(item.text.endsWith("Friend")){
                     if(!isExist(item.value))
-                        selectedUsers = [...selectedUsers,item]
+                        selectedUsers = [...selectedUsers,{value:item.value,id: friendsList[item.index].id}]
+                    console.log("FriendsArray",selectedUsers);
+
             }
             else {
                 // if group not exist
@@ -96,8 +100,9 @@
                     console.log(selectedGroups);
                     friends.map(friend=>{
                         if(!isExist(friend.user.name,item.value))
-                          selectedUsers = [...selectedUsers,{value:friend.user.name,groupName:item.value}]
+                          selectedUsers = [...selectedUsers,{value:friend.user.name,groupName:item.value,id: friend.user_id}]
                     })
+
                 }
             }
             insertInvited();
@@ -105,6 +110,18 @@
         }})
     }
     
+   //send Notification to all user
+    function sendNotification(){
+        //msg format userid,type,orderid,msg
+        console.log("SELECTUESER",selectedUsers);
+        selectedUsers.map(user=>{
+            const msg = `${user.id},Invitation,${current_user_name}`;
+            App.notification.send_msg(msg)
+            console.log("MESSAGE SENT");
+        })
+    }
+    
+
     // check if friend is exist in selectUser or not
     function isExist(friendName,groupName){
         let ret=false;
@@ -121,7 +138,17 @@
     function insertInvited(){
         let container = document.getElementById("invitedContainer");
         container.innerHTML="";
+       // <% if current_user.image != nil %><img src=<%= current_user.image %> >  <% else %><%= image_tag "a.png" ,  {width: 50, height: 50}%><% end %>'
         selectedUsers.map(item=>{
+            let imgE ="";
+            console.log(item);
+            /*if(item.image)
+                imgE=`<img src=${item.image}/>`;
+            else   imgE="<img src='/assets/images/a.png'/>";
+            let newElem = '<div class="col-md-4">' + "<%= image_tag "a.png" ,  {width: 50, height: 50}%>"
+            '<p class="text-center col-md-12"> '+item.value+'</p>'+
+            '<button id='+item.value+' item.value" onclick="removeInviation(event)" class="btn btn-danger col-md-12"> remove </button></div>';
+            */
             let newElem = '<div class="col-md-4"> <%= image_tag "a.png" %>'+
             '<p class="text-center col-md-12"> '+item.value+'</p>'+
             '<button id='+item.value+' item.value" onclick="removeInviation(event)" class="btn btn-danger col-md-12"> remove </button></div>';
@@ -164,6 +191,21 @@
         let reg = new RegExp('@'+tag,"g");
         friends.value = friends.value.replace(reg, "");
     }
+
+
+   /* App.notification.received = function(data)
+    {
+        alert(data['message'])
+    }
+    */
+    
+    $("#send").click(function(){
+        msg = "HELLO"
+        
+        /* SEND MESSAGE */
+        App.notification.send_msg(msg)
+    })
+
     /* <div class="col-md-4">
     #     <%= image_tag "a.png" %>
     #         <a href="" class="col-md-12"> Friend Name </a>
