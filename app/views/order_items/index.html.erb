@@ -2,6 +2,7 @@
     <%= notice %>
 </p>
 <h1>Order Details</h1>
+
 <div class="row">
     <div class="col-md-7">
         <table class="table">
@@ -13,17 +14,18 @@
                     <th scope="col">Amount</th>
                     <th scope="col">Price</th>
                     <th scope="col">Comment</th>
+                    <th > actions </th>
                 </tr>
             </thead>
             <tbody>
                 <% @order_item.each do |item|  %>
                 <tr>
-                    <th scope="col"></th>
+                    <th scope="col"><%= item.id %></th>
                     <th scope="col">
-                        <%= item.name %>
+                        <%= item.user.name %>
                     </th>
                     <th scope="col">
-                        <%= item.amount %>
+                        <%= item.name %>
                     </th>
                     <th scope="col">
                         <%= item.amount %>
@@ -34,9 +36,13 @@
                     <th scope="col">
                         <%= item.comment %>
                     </th>
+                    <th><%= link_to 'Delete item',  order_order_item_path(item.order.id,item.id),
+                    method: :delete,
+                    data: { confirm: 'Are you sure?' } %> </th>
                 </tr>
                 <% end %>
             </tbody>
+   
         </table>
     </div>
     <div class="col-md-5">

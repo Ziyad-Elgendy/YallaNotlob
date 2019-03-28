@@ -25,23 +25,23 @@
     <tbody>
     <% for order in @orders %>
       <tr>
-        <th scope="row"><%= order.order.id %></th>
-        <td><a href="<%= order_path(order.order) %>"><%= order.order.name %></a></td>
-        <td><%= order.order.restaurant %></td>
-        <td><%= order.count_invited_users(order.order.id) %></td>
-        <td><%= order.count_joined_users(order.order.id) %></td>
-        <td><%= order.order.status %></td>
-        <td><% if (order.order.status == 'waiting')%>
-        <%= link_to 'finish', order_path(order.order),
+        <th scope="row"><%= order.id %></th>
+        <td><%= order.name %></td>
+        <td><%= order.restaurant %></td>
+        <td><%= order.count_invited_users(order.id) %></td>
+        <td><%= order.count_joined_users(order.id) %></td>
+        <td><%= order.status %></td>
+        <td><% if (order.status == 'waiting')%>
+        <%= link_to 'finish', order_path(order),
         method: :put,
         data: { confirm: 'Are you sure?' } %>
-        <%= link_to 'cancel', order_path(order.order),
+        <%= link_to 'cancel', order_path(order),
         method: :delete,
         data: { confirm: 'Are you sure?' } %>
 
         
         <% else %>
-        <a href=" <%= order_path(order.order) %>" > view </a>
+        <a href=" <%= order_path(order) %>" > view </a>
 
 
         <% end %>

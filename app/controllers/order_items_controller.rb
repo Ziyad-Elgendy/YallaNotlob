@@ -19,6 +19,12 @@ class OrderItemsController < ApplicationController
         @orderItem.save
         redirect_to order_order_items_path
       end
-    def destroy
-    end
+  
+        def destroy
+            @order = Order.find(params[:order_id])
+            @order = @order.order_items.find(params[:id])
+            @order.destroy
+            redirect_to order_order_items_path
+        end
+
 end
