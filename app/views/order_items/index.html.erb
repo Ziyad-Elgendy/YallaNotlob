@@ -74,9 +74,13 @@ if(@order.user_id == current_user.id ) or ( @order.order_items.map(&:user_id).in
                         </div>            
                         <%= friend.user.name %>
                         </br>
+                        <% if(@order.user_id == current_user.id) %>
+
                         <%= link_to 'Delete item',  order_user_order_path(friend.order_id,friend.id),
                         method: :delete,
-                        data: { confirm: 'Are you sure?' } %>                        <% end %>
+                        data: { confirm: 'Are you sure?' } %>
+                        <%end %>        
+                                        <% end %>
                     </div>
                 </div>
                 <!-- Modal footer -->
@@ -131,10 +135,11 @@ if(@order.user_id == current_user.id ) or ( @order.order_items.map(&:user_id).in
                     </div>
                     <div class="col-md-7">
                         <span class="col-md-12"> <%= user.user.name %> </span>
-                      
+                        <% if(@order.user_id == current_user.id) %>
                         <%= link_to 'remove',  order_user_order_path(user.order_id,user.id),
                         method: :delete,
                         data: { confirm: 'Are you sure?' } %>
+                        <%end %>
                     </div>
                     </div>
                 </div>
