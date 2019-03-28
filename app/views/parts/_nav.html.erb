@@ -45,9 +45,11 @@
             <% end %>
           </div>
         </li>
-        <li class="nav-item">
-            <%= link_to('Logout', destroy_user_session_path, method: :delete) %>   
-        </li>
+        <% if user_signed_in? %>
+          <li class="nav-item">
+              <%= link_to('Logout', destroy_user_session_path, method: :delete) %>   
+          </li>
+        <% end %>
     </ul>
   </div>
 </nav>

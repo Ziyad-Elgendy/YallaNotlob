@@ -19,7 +19,9 @@
   </head>
 
   <body>
-    <%= render './parts/nav' %>
+    <% if user_signed_in? %>
+      <%= render './parts/nav' %>
+    <% end %>
     <div class="container">
     <% if flash[:notice] %>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
