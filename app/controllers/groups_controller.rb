@@ -1,7 +1,7 @@
 class GroupsController < ApplicationController
 
   def index
-      @groups = Group.all
+      @groups = Group.where(user_id: current_user.id)
       @group = Group.new
       # @group = Group.destroy
       # @group_s = Group.find(params[:id])
@@ -20,22 +20,14 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @groups = Group.all
+    @groups = Group.where(user_id: current_user.id)
     @group = Group.new
     
     @group = Group.find(params[:id])
     $search = @group.id
     @group_s = Group.find(params[:id])
     @members = Member.where(group_id: params[:id])
-    # @members_id = @members.user_id
-    @members.each do |ff|
-      puts ff.user.name;
-    end
-    # puts "===================="
-    @members.each do |i|
-      puts i.user.name
-    end
-    # puts "===================="
+
     @friends = @group_s.users
     render :index
 
