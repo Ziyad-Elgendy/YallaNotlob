@@ -6,22 +6,23 @@
   <div class="container">
       
     <div class="row justify-content-center">
-      <div class="col-md-1"></div>
-      <div class="col-md-2 ">
-        <%= form_with model: @group , local:true do |form| %>
-
-        <h5>Group Name:</h5>
+      <div class="col-md-10">
+        
+          <%= form_with model: @group , local:true do |form| %>
+            <div class="row">
+            <div class="col-md-2 ">
+              <h5>Group Name:</h5>
+            </div>
+            <div class="col-md-6">
+              <%= form.text_field :name, class: 'form-control', :rows => 8 %>
+            </div>
+            <div class="col-md-2">
+              <%= form.submit "Add", class: "btn btn-primary text-light btn-sm" %>
+            </div>
+            </div>
+          <% end %>
+      
       </div>
-      <div class="col-md-6">
-        <%= form.text_field :name, class: 'form-control', :rows => 8 %>
-      </div>
-      <div class="col-md-2">
-        <%= form.submit "Add", class: "btn btn-primary text-light btn-sm" %>
-        <% end %>
-      </div>
-      <div class="col-md-1"></div>
-
-
     </div>
 
 
