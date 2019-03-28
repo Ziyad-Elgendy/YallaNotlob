@@ -40,9 +40,11 @@ if(@order.user_id == current_user.id ) or ( @order.order_items.map(&:user_id).in
                     <th scope="col">
                         <%= item.comment %>
                     </th>
+                    <% if(item.user_id == current_user.id) %>
                     <th><%= link_to 'Delete item',  order_order_item_path(item.order.id,item.id),
                     method: :delete,
-                    data: { confirm: 'Are you sure?' } %> </th>
+                    data: { confirm: 'Are you sure?' } %> 
+                    <%end%></th>
                 </tr>
                 <% end %>
             </tbody>
@@ -67,8 +69,8 @@ if(@order.user_id == current_user.id ) or ( @order.order_items.map(&:user_id).in
                     <div class="modal-body">
                         <div class="row">
                             <% @invitation.each do |friend|  %>
-                            <img src="/assets/a-2205a102f198f437f576b28bc3518eefd26d163c8231b9fd7e3d4423e2e97ad7.png"
-                                width="50" height="50">
+                                <img src="<%= friend.user.image %>" class="col-md-12">  
+
                         </div>            
                         <%= friend.user.name %>
                         </br>
@@ -92,7 +94,7 @@ if(@order.user_id == current_user.id ) or ( @order.order_items.map(&:user_id).in
                 <div class="modal-content">
                     <!-- Modal body -->
                     <div class="modal-body">
-                    <% if(@order.img ==0) %>
+                    <% if(@order.img) %>
                   <p>  there is no menu</p>
                       
                        <% else %>
