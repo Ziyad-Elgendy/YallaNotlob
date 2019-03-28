@@ -1,5 +1,4 @@
-class UserOrder < ApplicationRecord
+class Activity < ApplicationRecord
     belongs_to :user
     belongs_to :order
-   
 end
