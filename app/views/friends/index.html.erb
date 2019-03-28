@@ -1,8 +1,6 @@
 <div class="container">
     <h1 class="title">My Friends</h1>
-    <div class="row">
         <%= form_with model: @friend, local: true do |form| %>
-    </div>
     <div class="row">
         <div class="col-md-3 ">
             <%= form.label :email %><br> 
@@ -20,12 +18,14 @@
         <div class="col-md-12">
             <h3> Friends List </h3>
         </div>
+        <div class="col-md-12">
         <% if flash[:notice] %>
             <div class="notice"><%= flash[:notice] %></div>
         <% end %>
         <% if flash[:error] %>
             <div class="error"><%= flash[:error] %></div>
         <% end %>
+        </div>
       <% for friend in @friends %>
       <div class="col-md-4">
       <div class="row">

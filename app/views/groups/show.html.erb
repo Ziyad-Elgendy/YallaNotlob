@@ -1,21 +1,25 @@
 <%$flag = 0%>
+
  <% @members.each do |friend| %>
 	<% $flag = $flag+1%>
-	<div class="col-sm-offset-1  col-sm-3">
-		<div class="panel-success text-center">
-			<img src="http://i66.tinypic.com/zwlr8g.png" class="img-circle" width="20" height="20" alt="Cinque Terre" >
-				<div class="textDesc" align="center">
-					<h4><code><%= friend.user.name %></code></h4>
-				    <%= link_to 'Remove', 
-						group_deletefriend_path(@group_s.id, user_id: friend.user.id),
-						method: :delete, data: { confirm: 'Are you sure?' }  %>
-				</div>
-		</div>
-	</div>
+  
+		<div class='row col-md-5 border border-secondary border-10' style="margin-right:20px;margin-left:20px;">
+			<div class='col-md-3' >
+				<img src="http://i66.tinypic.com/zwlr8g.png" class="img-circle mx-auto img " style="margin-top:7px;" width="40" height="40" alt="Cinque Terre" >
+
+			</div>
+			<div class='textDesc col-md-6' align="center">
+				<h4><code><%= friend.user.name %></code></h4>
+				<%= link_to 'Remove', 
+				group_deletefriend_path(@group_s.id, user_id: friend.user.id),
+				method: :delete, data: { confirm: 'Are you sure?' }  %>
+			</div>	
+		</div>	
+
 <%end%>
 
 
 <% if $flag == 0 %>
-	<div class="alert alert-info" role="alert" style='margin-top:40px; margin-left:20px;'> Empty ... Not Have Any Friend In .</div>
+	<div class="alert alert-info" role="alert" style='margin-top:40px;margin-left:20px;'> Empty ... Not Have Any Friend In .</div>
 
 <%end%>
