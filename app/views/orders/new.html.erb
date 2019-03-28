@@ -51,7 +51,8 @@
         </fieldset>
     </div>
 </div>  
-
+<button id="send">Send Message</button>
+    
 <%= javascript_include_tag "bootstrap-suggest.min.js" %>
 <script>
     $( document ).ready(function() {
@@ -122,7 +123,7 @@
         let container = document.getElementById("invitedContainer");
         container.innerHTML="";
         selectedUsers.map(item=>{
-            let newElem = '<div class="col-md-4"> <%= image_tag "a.png" %>'+
+            let newElem = '<div class="col-md-4"> <% if current_user.image %><img src="<%= current_user.image %>" >  <% else %><%= image_tag "a.png" ,  {width: 50, height: 50}%><% end %>'+
             '<p class="text-center col-md-12"> '+item.value+'</p>'+
             '<button id='+item.value+' item.value" onclick="removeInviation(event)" class="btn btn-danger col-md-12"> remove </button></div>';
             container.innerHTML+=newElem;
@@ -164,6 +165,20 @@
         let reg = new RegExp('@'+tag,"g");
         friends.value = friends.value.replace(reg, "");
     }
+
+
+    App.notification.received = function(data)
+    {
+        alert(data['message'])
+    }
+    
+    $("#send").click(function(){
+        msg = "HELLO"
+        
+        /* SEND MESSAGE */
+        App.notification.send_msg(msg)
+    })
+
     /* <div class="col-md-4">
     #     <%= image_tag "a.png" %>
     #         <a href="" class="col-md-12"> Friend Name </a>

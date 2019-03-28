@@ -24,6 +24,13 @@ class OrdersController < ApplicationController
                 users = JSON.parse params[:friends_invited]
                 users.each do |user|
                     @userObj = User.find_by name: user
+                    @notification = Notification.new
+                    @notification.order=@order
+                    @notification.user=@userObj
+                    @notification.type="Join"
+                    @notification.status="Unread"
+                    @notification.text= current_user.name + " invited you to his order"
+                    @notification.save
                     @userOrder = UserOrder.new
                     @userOrder.order=@order
                     @userOrder.user=@userObj

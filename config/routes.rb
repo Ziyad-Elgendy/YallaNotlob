@@ -4,10 +4,12 @@ Rails.application.routes.draw do
   devise_scope :user do  
     get '/users/sign_out' => 'devise/sessions#destroy'     
  end
+  mount ActionCable.server => "/cable"
   get 'welcome/showFriends'
   # root 'welcome#showFriends'
   resources :orders
   resources :friends
+  resources :notifications
   get 'friends_list' => 'friends#listF'     
   get 'groups_list' => 'groups#listG'     
   get 'group_friend_list/:name' => 'groups#listGF'     

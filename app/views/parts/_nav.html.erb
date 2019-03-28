@@ -19,18 +19,40 @@
       </li>
     </ul>
     <ul class="navbar-nav " >
-        <li class="nav-item dropdown">
-        
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        
-          <%= image_tag "notif.png" , {width: 30, height: 30} %>
-       
+    <li id="notification_li">
+        <span id="notification_count">
+        <%  if user_signed_in?  %>
+        <%= @notifications.count %>
+        <% else %>
+        <%= 0 %>
+        <% end %> 
+        </span>
+        <a href="#" id="notificationLink">
+          <%= image_tag "notif.png", {width: 35, height: 35} %>
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
+        <div id="notificationContainer"> 
+        <%= link_to ("See All") , notifications_path %>
+          <div id="notificationTitle">
+            Notifications
+          </div>
+          <div id="notificationsBody" class="notifications">
+            <%  if user_signed_in?  %>
+              <% @notifications.each do |item| %>
+                <% if item.typeOfMessage == "Join" %> 
+                    <div class="notify"> 
+                      <%= item.text %>
+                       <a href=<%= "/order" %> >Order</a>
+                    </div>
+
+                <% end %>
+              <% end %>
+            <% end %>
+          </div>
+          <div id="notificationFooter">
+            <%= link_to ("See All") , notifications_path %>
+          </div>
         </div>
+    </li>
   </li>
       <li class="nav-item ">
       <div class="row">
@@ -54,3 +76,30 @@
     </ul>
   </div>
 </nav>
+
+<script>
+$(document).ready(function()
+{
+    //Document Click hiding the popup 
+$(document).click(function()
+{
+$("#notificationContainer").hide();
+});
+
+//Popup on click
+$("#notificationContainer").click(function()
+{
+  // return false;
+});
+
+$("#notificationLink").click(function()
+{
+  $("#notificationContainer").fadeToggle(300);
+  $("#notification_count").fadeOut("slow");
+  return false;
+});
+
+
+
+});
+</script>
