@@ -39,7 +39,7 @@
         <%= link_to 'cancel', order_path(order),
         method: :delete,
         data: { confirm: 'Are you sure?' } %>
-
+        <a href=" <%= order_order_items_path(order) %>" > view </a>
         
         <% else %>
         <a href=" <%= order_order_items_path(order) %>" > view </a>
