@@ -54,10 +54,7 @@ class OrdersController < ApplicationController
         @orders = current_user.orders
     end
     
-    def show
-        
-    end
-    
+   
     def edit
     end
     
