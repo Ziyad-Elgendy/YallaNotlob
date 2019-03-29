@@ -95,10 +95,8 @@ if(@order.user_id == current_user.id ) or ( @order.order_items.map(&:user_id).in
                 <div class="modal-content">
                     <!-- Modal body -->
                     <div class="modal-body">
-                    <% if @order.img %>
+                    <% if @order.img.attached? %>
                     <%=image_tag @order.img , class: "img-responsive", style: "max-height:250px;"%>
-                 
-                      
                        <% else %>
                        <p>  there is no menu</p>
                        <%end%>
