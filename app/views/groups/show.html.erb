@@ -1,17 +1,13 @@
 <%$flag = 0%>
-
- <% @members.each do |friend| %>
-	<% $flag = $flag+1%>
-  
+<% @members.each do |friend| %>
+	<% $flag = $flag+1%>  
 		<div class='row col-md-5 border border-secondary border-10' style="margin-right:20px;margin-left:20px;margin-bottom:20px;">
 			<div class='col-md-3' >        
-          <% if friend.user.image %>
-          <img src="<%= friend.user.image %>" class="img-circle mx-auto img " style="margin-top:7px;" width="40" height="40">  
-        <% else %>
-        <%= image_tag "a.png" ,{width: 50, height: 50} %>
-          <% end %>    
-
-
+        	<% if friend.user.image %>
+        		<img src="<%= friend.user.image %>" class="img-circle mx-auto img " style="margin-top:7px;" width="40" height="40">  
+        	<% else %>
+        		<%= image_tag "a.png" ,{width: 50, height: 50} %>
+        	<% end %>    
 			</div>
 			<div class='textDesc col-md-6' align="center">
 				<h4><code><%= friend.user.name %></code></h4>
@@ -20,13 +16,9 @@
 				method: :delete, data: { confirm: 'Are you sure?' }  %>
 			</div>	
 		</div>	
-
 <%end%>
-
-
 <% if $flag == 0 %>
-	<div class="alert alert-info" role="alert" style='margin-top:40px;margin-left:20px;'> Empty ... Not Have Any Friend In .</div>
-
+	<div class="alert alert-info" role="alert" style='margin-top:40px;margin-left:20px;'> This group doesnot has members.</div>
 <%end%>
 
 

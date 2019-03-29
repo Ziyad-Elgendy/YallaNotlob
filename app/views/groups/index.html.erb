@@ -1,10 +1,6 @@
-
-
   <h1 class="title text-center" style='font_color=blue;margin-bottom:10px;'>Groups</h1>
 
-  <!--Add new group-->
-  <div class="container">
-      
+  <div class="container">     
     <div class="row justify-content-center">
       <div class="col-md-10">
         
@@ -20,19 +16,10 @@
               <%= form.submit "Add", class: "btn btn-primary text-light btn-sm" %>
             </div>
             </div>
-          <% end %>
-      
+          <% end %>     
       </div>
     </div>
-
-
-    <hr  style='color:blue;height:5px;background:blue' >
-
-    
-
-
-    <!-- The div for lsgroups -->
-    <!-- The container of listgroups & manage group -->
+    <hr  style='color:blue;height:5px;background:blue' >   
     <div class="row">
 
       <div class="col-md-4 ">
@@ -58,10 +45,7 @@
             </div>
           </div>   
         </div>
-
-
       
-      <!-- The group managing div -->
       <div class='col-md-8 '>
         <div class="card">
           <div class="card-header bg-success text-white" style="font-size:25px; text-align:center;">  
@@ -71,7 +55,6 @@
                   Select Group
                 <%end%>
           </div>
-          <!-- The body of the card start from here -->
           <div class="card-body bg-light">
             <div id="addFriendToList" class="row justify-content-center">
                 <% if @group_s %>
@@ -82,21 +65,14 @@
                       <%= submit_tag("Add", class: "btn btn-success text-light btn-sm") %>
                   <% end %>              
             </div>
-
-              <div class="row" style='margin-top:40px;margin-left:20px'>
-                  <%= render :file => 'groups/show' %>
-              </div>	
+            <div class="row" style='margin-top:40px;margin-left:20px'>
+                <%= render :file => 'groups/show' %>
+            </div>	
               <%end%>
-
-          <!--card-body-->
           </div>
-        <!-- card-->
         </div>
-      <!-- The group managing div -->
       </div>
-    <!-- The container of listgroups & manage group -->
     </div>
-  <!--container-->
   </div>
 
 <script>
