@@ -1,6 +1,7 @@
 class OrderItemsController < ApplicationController
     # render :layout => "application"
     def index
+ 
         if params['join'] == "true"
             @user_order = UserOrder.where({order_id: params[:order_id],user_id: current_user.id}).first
             if @user_order != nil
@@ -20,7 +21,6 @@ class OrderItemsController < ApplicationController
         @order =  Order.find(params[:order_id])
         @invitation = UserOrder.where(order_id: params[:order_id], status: "invited")
         @joined = UserOrder.where(order_id: params[:order_id], status: "Joined")
-
     end
     def create
         @order = Order.find(params[:order_id])

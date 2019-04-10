@@ -144,6 +144,8 @@ function sendJoinNotification(event){
     const msg =OrderId+","+"Joined";
     App.notification.send_msg(msg)
     console.log("MESSAGE SENT",);
+    location.href=event.target.getAttribute('href');
+    return false;
 }
 
 </script>

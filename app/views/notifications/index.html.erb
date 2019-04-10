@@ -3,7 +3,7 @@
     <% if item.typeOfMessage == "Join" %> 
         <li class="list-group-item"> 
           <%= item.text %>
-           <a href=<%= "/orders/"+item.order.id.to_s+"/order_items?join=true" %> >Join</a>
+           <a onclick="sendJoinNotification(event)"  href=<%= "/orders/"+item.order.id.to_s+"/order_items?join=true" %> >Join</a>
         </li>
         <% else %>  
           <li class="list-group-item"> 
@@ -14,3 +14,14 @@
   <% end %>
 </ul>
 
+<script>
+//send Join Notification to Order Owner
+function sendJoinNotification(event){
+    // msg format orderId,Joined
+    const OrderId=event.target.getAttribute('href').split("/")[2];
+    const msg =OrderId+","+"Joined";
+    App.notification.send_msg(msg)
+    console.log("MESSAGE SENT",);
+}
+
+</script>

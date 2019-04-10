@@ -1,8 +1,8 @@
 
 <h1>Order Details</h1>
 <%
-if(@order.user_id == current_user.id ) or ( @order.order_items.map(&:user_id).include? current_user.id )%>
- 
+if(@order.user_id == current_user.id ) or ( @order.user_orders.map(&:user_id).include? current_user.id )%>
+
 <div class="row">
     <div class="col-md-7">
         <table class="table">
@@ -121,7 +121,7 @@ if(@order.user_id == current_user.id ) or ( @order.order_items.map(&:user_id).in
                 <div class="row">
                     <div class="col-md-5">
           
-                    <% if user.image %>
+                    <% if @order.img.attached? %>
                     <img src="<%= user.user.image %>" class="col-md-12">  
                   <% else %>
                   <%= image_tag "a.png" ,class:"col-md-12" %>
